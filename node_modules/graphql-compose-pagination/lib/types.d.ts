@@ -1,0 +1,4 @@
+import { ObjectTypeComposer, SchemaComposer, InterfaceTypeComposer, UnionTypeComposer, ScalarTypeComposer, EnumTypeComposer } from 'graphql-compose';
+export declare function preparePaginationInfoTC<TContext>(sc: SchemaComposer<TContext>): ObjectTypeComposer<any, TContext>;
+export declare function preparePaginationTC<TSource, TContext>(tc: ObjectTypeComposer<TSource, TContext> | InterfaceTypeComposer<TSource, TContext> | UnionTypeComposer<TSource, TContext> | ScalarTypeComposer<TContext> | EnumTypeComposer<TContext>, resolverName?: string): ObjectTypeComposer<TSource, TContext>;
+//# sourceMappingURL=types.d.ts.map
