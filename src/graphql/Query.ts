@@ -19,3 +19,5 @@ const Query = {
     products: ProductTC.mongooseResolvers.findMany(),
     productPagination: ProductTC.mongooseResolvers.pagination()
 };
+
+export default Query;
