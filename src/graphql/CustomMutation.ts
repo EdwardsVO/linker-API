@@ -1,7 +1,9 @@
 import {
-    createSupplier
+    createSupplier,
+    createProduct
 } from '../controllers'
 
 export default {
-    createSupplier
+    createSupplier,
+    createProduct
 }

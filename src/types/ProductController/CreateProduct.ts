@@ -1,4 +1,5 @@
 import { Types } from 'mongoose';
+import { EnterpriseDocument } from '../../models';
 
 export const CreateProductInput = `
     input CreateProductInput {
@@ -9,12 +10,15 @@ export const CreateProductInput = `
     input CreateProductInfoInput {
         name: String!,
         description: String!,
-        category: Number!,
-        price: Number!,
-        enterprise: MongoID
+        serial: String!,
+        category: Float!,
+        price: Float!,
+        enterprise: MongoID,
+        quantity: Float!,
+        units: Float!
     }
     input CreateProductImagesInput {
-        image: String
+        url: String
     }
 `;
 
@@ -22,10 +26,14 @@ export type TCreateProductInput = {
     createProductInfo: {
         name: string;
         description: string;
+        serial: string;
+        category: number;
         price: number;
-        enterprise: Types.ObjectId;
+        enterprise: EnterpriseDocument;
+        quantity: number;
+        units: number;
     },
     createProductImages: {
-        image: string;
+        url: string;
     }
 }

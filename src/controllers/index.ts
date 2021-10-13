@@ -1,1 +1,2 @@
-export { createSupplier } from './SupplierController'
+export { createSupplier } from './SupplierController';
+export { createProduct } from './ProductController';

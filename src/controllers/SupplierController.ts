@@ -39,7 +39,7 @@ export const createSupplier = schemaComposer.createResolver<
         const {
             name,
             rif,
-            category
+            category //CURRENTLY NOT USING, ONLY FOR MVP PURPOSES 
         } = args.data.createEnterprise;
 
         //VALIDATORS
@@ -81,7 +81,7 @@ export const createSupplier = schemaComposer.createResolver<
                 name,
                 rif,
                 status: 1,
-                category: 0
+                category: 0 //ONLY FOR MVP PURPOSES
             });
             return newSupplier(enterprise);
         };
