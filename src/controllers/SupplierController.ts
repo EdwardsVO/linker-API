@@ -7,7 +7,6 @@ import {
 import {
     UserTC,
     User,
-    UserDocument,
     Enterprise,
     EnterpriseDocument,
 } from '../models';
