@@ -12,15 +12,17 @@ export const CreateSupplierInput = `
     dni: String,
     email: String!,
     photo: String,
-    role: Int!,
+    phone: String,
+    role: Int,
     status: Float,
+    enterprise: MongoID,
   }
   input CreateEnterpriseInput {
     name: String!,
     owner: MongoID,
     rif: String!,
-    status: Number!,
-    category: Number!,
+    status: Float,
+    category: Float!,
   }
 `;
 export type TCreateSupplierInput =  {
@@ -33,6 +35,8 @@ export type TCreateSupplierInput =  {
         photo: string;
         role: number;
         status: number;
+        phone: string;
+        enterprise: Types.ObjectId;
     },
     createEnterprise: {
         name: string;

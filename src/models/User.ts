@@ -108,16 +108,16 @@ const userSchema = new Schema<UserDocument>(
 
 //ADDING RELATIONS
 
-UserTC.addRelation('enterprises', {
+UserTC.addRelation('enterprise', {
     resolver() {
-      return EnterpriseTC.mongooseResolvers.dataLoaderMany();
+      return EnterpriseTC.mongooseResolvers.dataLoader();
     },
     prepareArgs: {
-      _ids: (source) => source.enterprise,
+      _id: (source) => source.enterprise,
       skip: null,
       sort: null,
     },
-    projection: { enterprises: 1 },
+    projection: { enterprise: 1 },
   });
 
 //   UserTC.addRelation('shoppingCar', {

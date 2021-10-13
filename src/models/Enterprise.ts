@@ -7,7 +7,6 @@ export interface EnterpriseDocument extends Document {
     name?: string;
     owner?: UserDocument | Types.ObjectId;
     rif?: string;
-    creationDate?: Date;
     registrationDate?: Date;
     status?: number;
     rating?: number;

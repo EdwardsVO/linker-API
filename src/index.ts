@@ -1,7 +1,7 @@
 /* eslint-disable import/newline-after-import */
 /* eslint-disable import/first */
 import dotenv from 'dotenv';
-dotenv.config({ path: './src/variables.env' })
+dotenv.config({ path: './variables.env' })
 import mongoose from 'mongoose';
 import { ApolloServer } from 'apollo-server-express';
 import schema from './graphql/schema';
