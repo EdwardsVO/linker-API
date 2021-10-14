@@ -4,11 +4,14 @@ import { EnterpriseDocument, EnterpriseTC } from './Enterprise'
 
 export interface ProductDocument extends Document {
     name?: string,
+    serial?: string,
     description?: string,
     category?: number,
     price?: number,
     images?: Array<string>,
     rating?: number,
+    quantity?: number,
+    units?: number,
     review?: Types.ObjectId, // BuyerReviewDocument []
     enterprise?: EnterpriseDocument | Types.ObjectId,
     uploadedDate?: Date,
@@ -22,6 +25,10 @@ const productSchema = new Schema<ProductDocument>(
             type: String,
             required: [true, 'Ingrese nombre del producto']
         },
+        serial: {
+            type: String,
+            required: [true, 'Ingrese serial del producto']
+        },
         description: {
             type: String,
             required: [true, 'Ingrese una descripcion para el producto']
@@ -34,9 +41,19 @@ const productSchema = new Schema<ProductDocument>(
             type: Number,
             required: [true, 'Ingrese precio del producto']
         },
+        quantity: {
+            type: Number,
+            required: [true, 'Ingrese cantidad de unidades del producto']
+        },
+        units: {
+            type: Number,
+            required: [true, 'Ingrese unidades de medicion para la cantidad del producto']
+        },
         images: [{
-            type: String,
-            default: ''
+            url: {
+                type: String,
+                default: ''
+            }
         }],
         rating: {
             type: Number,

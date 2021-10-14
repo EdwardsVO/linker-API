@@ -45,8 +45,10 @@ const enterpriseSchema = new Schema<EnterpriseDocument> (
             required: [true, 'Ingrese RIF de la empresa']
         },
         products: [{
-            type: Schema.Types.ObjectId,
-            ref: 'Products'
+            product: {
+              type: Schema.Types.ObjectId,
+              ref: 'Products'
+            }
         }],
         salesSummary: [{
             type: Schema.Types.ObjectId,
