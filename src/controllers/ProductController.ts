@@ -23,7 +23,7 @@ export const createProduct = schemaComposer.createResolver<
     description: 'Create a new enterprise product',
     kind: 'mutation',
     args: { data: CreateProductInput },
-    async resolve({ args, context }){
+    async resolve({ args, context }) {
         //SECURITY
 
         //ARGS
@@ -39,36 +39,50 @@ export const createProduct = schemaComposer.createResolver<
             units
         } = args.data.createProductInfo
 
-        const  images  = args.data.createProductImages
+        const images = args.data.createProductImages
 
         //VALIDATORS
-        
-        const productExist =  await Product.findOne({ serial }).exec();
+
+        const productExist = await Product.findOne({ serial }).exec();
         const enterpriseExist = await Enterprise.findById(enterprise).exec();
 
-        if(!enterpriseExist) {
-            throw new ApolloError ('Empresa inexistente');
+        if (!enterpriseExist) {
+            throw new ApolloError('Empresa inexistente');
         }
 
-        if(productExist) {
-            throw new ApolloError ('Producto existente');
+        if (productExist) {
+            throw new ApolloError('Producto existente');
         }
-        
-        //CREATING NEW PRODUCT
-        const product = await Product.create({
-            name,
-            description,
-            price,
-            enterprise,
-            serial,
-            quantity,
-            category,
-            units,
-            images
-        })
-        
-        
+
         //PUSHING PRODUCT INTO ENTERPRISE PRODUCTS
+        const productIntoEnterprise = async(newProduct: ProductDocument) => {
+            const productsList = enterpriseExist.get('products');
+            productsList.push(newProduct);
+            enterpriseExist.products = productsList;
+            await enterpriseExist.save();
+
+            return newProduct; //CONTROLLER ENDS
+        }
+
+
+        //CREATING NEW PRODUCT
+        const product = async () => {
+            const newProduct = await Product.create({
+                name,
+                description,
+                price,
+                enterprise,
+                serial,
+                quantity,
+                category,
+                units,
+                images
+            });
+            return productIntoEnterprise(newProduct);
+        }
+
         
+    return product();
+
     }
 })
