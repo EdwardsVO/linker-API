@@ -13,6 +13,7 @@ export const CreateProductInput = `
         serial: String!,
         category: Float!,
         price: Float!,
+        productStatus: Float,
         enterprise: MongoID,
         quantity: Float!,
         units: Float!
@@ -29,6 +30,7 @@ export type TCreateProductInput = {
         serial: string;
         category: number;
         price: number;
+        productStatus: number;
         enterprise: EnterpriseDocument;
         quantity: number;
         units: number;

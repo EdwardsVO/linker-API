@@ -8,6 +8,7 @@ export interface ProductDocument extends Document {
     description?: string,
     category?: number,
     price?: number,
+    productStatus?: number,
     images?: Array<string>,
     rating?: number,
     quantity?: number,
@@ -40,6 +41,11 @@ const productSchema = new Schema<ProductDocument>(
         price: {
             type: Number,
             required: [true, 'Ingrese precio del producto']
+        },
+        productStatus: {
+            type: Number,
+            required: [true, 'Ingrese el status del producto'],
+            default: 0
         },
         quantity: {
             type: Number,
