@@ -37,7 +37,7 @@ export const createEntrepreneur = schemaComposer.createResolver<
 
         const entrepreneurExist = await User.findOne({ dni, role: 1 }).exec();
         if (entrepreneurExist) {
-            throw new ApolloError('Error: Supplier existente');
+            throw new ApolloError('Error: Emprendedor existente');
         }
         //CREATING NEW ENTREPRENEUR
         const entrepreneur = await User.create({
