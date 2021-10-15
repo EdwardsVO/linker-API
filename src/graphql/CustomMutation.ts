@@ -1,9 +1,11 @@
 import {
     createSupplier,
-    createProduct
+    createProduct,
+    createEntrepreneur
 } from '../controllers'
 
 export default {
     createSupplier,
-    createProduct
+    createProduct,
+    createEntrepreneur
 }
