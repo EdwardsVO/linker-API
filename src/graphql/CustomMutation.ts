@@ -1,3 +1,4 @@
+import { signS3 } from './../controllers/ImagesSchema';
 import {
     createSupplier,
     createProduct,
@@ -7,5 +8,6 @@ import {
 export default {
     createSupplier,
     createProduct,
-    createEntrepreneur
+    createEntrepreneur,
+    signS3
 }
