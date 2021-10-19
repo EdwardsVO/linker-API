@@ -4,7 +4,7 @@ import { EnterpriseDocument } from '../../models';
 export const CreateProductInput = `
     input CreateProductInput {
         createProductInfo: CreateProductInfoInput,
-        createProductImages: [CreateProductImagesInput]
+        createProductImages: [String]
     }
 
     input CreateProductInfoInput {
@@ -18,9 +18,7 @@ export const CreateProductInput = `
         quantity: Float!,
         units: Float!
     }
-    input CreateProductImagesInput {
-        url: String
-    }
+  
 `;
 
 export type TCreateProductInput = {
@@ -35,7 +33,6 @@ export type TCreateProductInput = {
         quantity: number;
         units: number;
     },
-    createProductImages: {
-        url: string;
-    }
+    createProductImages: Array<string>;
+
 }
