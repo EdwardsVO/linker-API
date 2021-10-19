@@ -7,7 +7,8 @@ export interface ShoppingCartDocument extends Document {
     client: UserDocument | Types.ObjectId;
     products: Array<ProductDocument> | Types.ObjectId;
     tax: number;
-    totalPrice: number;   
+    totalPrice: number;
+    status: number;
 }
 
 const shoppingCartSchema = new Schema <ShoppingCartDocument>({
@@ -28,6 +29,10 @@ const shoppingCartSchema = new Schema <ShoppingCartDocument>({
     totalPrice: {
         type: Number,
         default: 0
+    },
+    status: {
+      type: Number,
+      default: 0
     }
 })
 

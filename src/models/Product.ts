@@ -56,10 +56,7 @@ const productSchema = new Schema<ProductDocument>(
             required: [true, 'Ingrese unidades de medicion para la cantidad del producto']
         },
         images: [{
-            url: {
-                type: String,
-                default: ''
-            }
+            type: String
         }],
         rating: {
             type: Number,
