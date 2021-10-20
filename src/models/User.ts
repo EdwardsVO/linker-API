@@ -16,7 +16,6 @@ export interface UserDocument extends Document {
     category?: number;
     buyerRating?: number;
     summaryShop?: Types.ObjectId //|| BillDocument[]
-    shoppingCart?: Types.ObjectId; //|| ShopingCarDocument
     enterprise?: EnterpriseDocument | Types.ObjectId; //
     reviewsMade?: Types.ObjectId; //|| BuyerReviewDocument[]
     questionsMade?: Types.ObjectId; //||QuestionsMadeDocument[]
@@ -81,10 +80,6 @@ const userSchema = new Schema<UserDocument>(
             type: Schema.Types.ObjectId,
             ref: 'SummaryShop'
         }],
-        shoppingCart: {
-            type: Schema.Types.ObjectId,
-            ref: 'ShoppingCar'
-        },
         enterprise: {
             type: Schema.Types.ObjectId,
             ref: 'enterprise'
@@ -120,14 +115,4 @@ UserTC.addRelation('enterprise', {
     projection: { enterprise: 1 },
   });
 
-//   UserTC.addRelation('shoppingCar', {
-//     resolver() {
-//       return ShoppingCarTC.mongooseResolvers.dataLoader();
-//     },
-//     prepareArgs: {
-//       _ids: (source) => source.shoppingCar,
-//       skip: null,
-//       sort: null,
-//     },
-//     projection: { shoppingCar: 1 },
-//   });
+//RELACION CON BILLS

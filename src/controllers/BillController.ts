@@ -29,20 +29,23 @@ export const createBill = schemaComposer.createResolver<
             client,
             tax,
             totalPrice,
-        } = args.data.createBillInfoInput
+        } = args.data.createBillInfoInput;
 
-        const products = args.data.addingProducts
+        const products = args.data.addingProducts;
 
         //VALIDATORS
          
 
         //GENERATING A NEW BILL
-        const bill = await Bill.create(
+        const bill = await Bill.create({
             tax,
             totalPrice,
             client,
-            products
-        )
+            products,
+            status: 0
+        })
+        console.log(products)
+        console.log(bill)
         return bill;
     }
 })

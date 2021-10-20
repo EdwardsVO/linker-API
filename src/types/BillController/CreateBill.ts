@@ -1,5 +1,8 @@
 import { Types } from 'mongoose';
-import { UserDocument } from '../../models';
+import { 
+    UserDocument,
+    ProductDocument
+ } from '../../models';
 
 export const CreateBillInput = `
     input CreateBillInput {
@@ -22,5 +25,6 @@ export type  TCreateBillInput = {
         totalPrice: number;
         review: string;
     },
-    addingProducts: Array<Types.ObjectId>
+    addingProducts: Array<ProductDocument>;
+
 }
