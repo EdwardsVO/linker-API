@@ -15,7 +15,6 @@ export const CreateEntrepreneurInput = `
         phone: String,
         role: Float,
         status: Float,
-        shoppingCart: MongoID
       }
 `;
 
@@ -30,6 +29,7 @@ export type TCreateEntrepreneurInput =  {
         role: number;
         status: number;
         phone: string;
-        shoppingCart: Types.ObjectId;
     }
 };
+
+//FALTA AGREGAR SUMMARY SHOP
