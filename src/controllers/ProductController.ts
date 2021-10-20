@@ -8,8 +8,7 @@ import {
     ProductTC,
     Product,
     ProductDocument,
-    Enterprise,
-    EnterpriseDocument,
+    Enterprise
 } from '../models';
 
 export const createProduct = schemaComposer.createResolver<
