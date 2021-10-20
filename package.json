@@ -63,5 +63,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.10",
     "typescript": "^4.4.3"
+  },
+  "engines": {
+    "node": "v14.15.5"
   }
 }

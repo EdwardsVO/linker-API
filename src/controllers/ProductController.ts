@@ -43,15 +43,10 @@ export const createProduct = schemaComposer.createResolver<
 
         //VALIDATORS
 
-        const productExist = await Product.findOne({ serial }).exec();
         const enterpriseExist = await Enterprise.findById(enterprise).exec();
 
         if (!enterpriseExist) {
             throw new ApolloError('Empresa inexistente');
-        }
-
-        if (productExist) {
-            throw new ApolloError('Producto existente');
         }
 
         //PUSHING PRODUCT INTO ENTERPRISE PRODUCTS
