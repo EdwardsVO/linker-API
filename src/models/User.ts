@@ -2,6 +2,7 @@
 import { Schema, Document, Types, model} from 'mongoose';
 import { composeMongoose } from 'graphql-compose-mongoose';
 import { EnterpriseDocument, EnterpriseTC } from './Enterprise'
+import { ShoppingCartDocument, ShoppingCartTC } from './ShoppingCart'
 
 export interface UserDocument extends Document {
     username?: string;
@@ -20,7 +21,8 @@ export interface UserDocument extends Document {
     reviewsMade?: Types.ObjectId; //|| BuyerReviewDocument[]
     questionsMade?: Types.ObjectId; //||QuestionsMadeDocument[]
     createdAt?: Date;
-    updatedAt ?: Date;
+    updatedAt?: Date;
+    shoppingCart?: ShoppingCartDocument | Types.ObjectId; 
 }
 
 const userSchema = new Schema<UserDocument>(
@@ -91,7 +93,11 @@ const userSchema = new Schema<UserDocument>(
         questionsMade: [{
             type: Schema.Types.ObjectId,
             ref: 'questionsMade'
-        }]
+        }],
+        shoppingCart: {
+            type: Schema.Types.ObjectId,
+            ref: 'shoppingCart'
+        }
     }
 )
 
@@ -113,6 +119,18 @@ UserTC.addRelation('enterprise', {
       sort: null,
     },
     projection: { enterprise: 1 },
+  });
+
+  UserTC.addRelation('shoppingCart', {
+    resolver() {
+      return ShoppingCartTC.mongooseResolvers.dataLoader();
+    },
+    prepareArgs: {
+      _id: (source) => source.enterprise,
+      skip: null,
+      sort: null,
+    },
+    projection: { shoppingCart: 1 },
   });
 
 //RELACION CON BILLS

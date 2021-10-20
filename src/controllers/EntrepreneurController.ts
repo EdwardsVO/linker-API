@@ -7,6 +7,7 @@ import {
 import {
     UserTC,
     User,
+    ShoppingCart
 } from '../models';
 
 export const createEntrepreneur = schemaComposer.createResolver<
@@ -38,7 +39,15 @@ export const createEntrepreneur = schemaComposer.createResolver<
         const entrepreneurExist = await User.findOne({ dni, role: 1 }).exec();
         if (entrepreneurExist) {
             throw new ApolloError('Error: Emprendedor existente');
+
         }
+        //CREATING SHOPPING CART
+
+        const shopCart = await ShoppingCart.create({
+            products: []
+        })
+        console.log(shopCart)
+
         //CREATING NEW ENTREPRENEUR
         const entrepreneur = await User.create({
             username,
@@ -50,6 +59,9 @@ export const createEntrepreneur = schemaComposer.createResolver<
             role: 1,
             status: 1,
         });
+        entrepreneur.shoppingCart = shopCart;
+        entrepreneur.save();
+        console.log(entrepreneur)
         return entrepreneur
     }
 })
