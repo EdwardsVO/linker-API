@@ -4,7 +4,7 @@ module.exports = {
     node: true,
   },
   extends: [
-    'airbnb-base',
+    'airbnb',
     'prettier',
     'plugin:@typescript-eslint/recommended',
     'plugin:import/errors',
