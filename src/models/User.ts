@@ -126,7 +126,7 @@ UserTC.addRelation('enterprise', {
       return ShoppingCartTC.mongooseResolvers.dataLoader();
     },
     prepareArgs: {
-      _id: (source) => source.enterprise,
+      _id: (source) => source.shoppingCart,
       skip: null,
       sort: null,
     },
