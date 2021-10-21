@@ -1,7 +1,7 @@
 import { Schema, Document, Types, model } from 'mongoose';
 import { composeMongoose } from 'graphql-compose-mongoose';
 import { ProductDocument, ProductTC } from './Product';
-import { UserDocument, UserTC } from './User'
+import { UserDocument, UserTC } from './User';
 
 export interface EnterpriseDocument extends Document {
   name?: string;
@@ -12,61 +12,67 @@ export interface EnterpriseDocument extends Document {
   rating?: number;
   category?: number;
   products?: Array<ProductDocument> | Types.ObjectId;
-  salesSummary?: Types.ObjectId; //BillDocument[]
-  commentsMadeIt?: Types.ObjectId; //SellerComment[]
+  salesSummary?: Types.ObjectId; // BillDocument[]
+  commentsMadeIt?: Types.ObjectId; // SellerComment[]
 }
 
-const enterpriseSchema = new Schema<EnterpriseDocument>(
-  {
-    name: {
-      type: String,
-      required: [true, 'Ingrese nombre de empresa']
-    },
-    status: {
-      type: Number,
-      default: 0
-    },
-    rating: {
-      type: Number,
-      default: 0
-    },
-    category: {
-      type: Number,
-      default: 0
-    },
-    owner: {
+const enterpriseSchema = new Schema<EnterpriseDocument>({
+  name: {
+    type: String,
+    required: [true, 'Ingrese nombre de empresa'],
+  },
+  status: {
+    type: Number,
+    default: 0,
+  },
+  rating: {
+    type: Number,
+    default: 0,
+  },
+  category: {
+    type: Number,
+    default: 0,
+  },
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: 'Owner',
+  },
+  rif: {
+    type: String,
+    unique: true,
+    trim: true,
+    required: [true, 'Ingrese RIF de la empresa'],
+  },
+  products: [
+    {
       type: Schema.Types.ObjectId,
-      ref: 'Owner'
+      ref: 'Products',
     },
-    rif: {
-      type: String,
-      unique: true,
-      trim: true,
-      required: [true, 'Ingrese RIF de la empresa']
+  ],
+  salesSummary: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'salesSummary',
     },
-    products: [{
+  ],
+  commentsMadeIt: [
+    {
       type: Schema.Types.ObjectId,
-      ref: 'Products'
+      ref: 'commentsMadeIt',
+    },
+  ],
+});
+// MODELS
 
-    }],
-    salesSummary: [{
-      type: Schema.Types.ObjectId,
-      ref: 'salesSummary'
-    }],
-    commentsMadeIt: [{
-      type: Schema.Types.ObjectId,
-      ref: 'commentsMadeIt'
-    }]
-  }
-)
-//MODELS
+export const Enterprise = model<EnterpriseDocument>(
+  'Enterprise',
+  enterpriseSchema
+);
+export const EnterpriseTC = composeMongoose<EnterpriseDocument, any>(
+  Enterprise
+);
 
-export const Enterprise = model<EnterpriseDocument>('Enterprise', enterpriseSchema);
-export const EnterpriseTC = composeMongoose<EnterpriseDocument, any>(Enterprise);
-
-//RELATIONS
-
-
+// RELATIONS
 
 EnterpriseTC.addRelation('products', {
   resolver() {
@@ -91,4 +97,3 @@ EnterpriseTC.addRelation('owner', {
   },
   projection: { owner: 1 },
 });
-

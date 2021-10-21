@@ -1,7 +1,7 @@
 import { Schema, Document, Types, model } from 'mongoose';
 import { composeMongoose } from 'graphql-compose-mongoose';
 import { ProductDocument, ProductTC } from './Product';
-import { UserDocument, UserTC } from './User'
+import { UserDocument, UserTC } from './User';
 
 export interface BillDocument extends Document {
   client?: UserDocument | Types.ObjectId;
@@ -10,41 +10,43 @@ export interface BillDocument extends Document {
   totalPrice?: number;
   status?: number;
   paidDate?: Date;
-  review?: Types.ObjectId; //Falta
+  review?: Types.ObjectId; // Falta
 }
 
 const billSchema = new Schema<BillDocument>({
   client: {
     type: Schema.Types.ObjectId,
-    required: [true, 'Ingrese cliente']
+    required: [true, 'Ingrese cliente'],
   },
-  products: [{
+  products: [
+    {
       type: Schema.Types.ObjectId,
-      ref: 'Products'
-  }],
+      ref: 'Products',
+    },
+  ],
   tax: {
     type: Number,
-    default: 0
+    default: 0,
   },
   totalPrice: {
     type: Number,
-    default: 0
+    default: 0,
   },
   status: {
     type: Number,
-    default: 0
+    default: 0,
   },
   paidDate: {
-    type: Date
-  }
-  //review
-})
+    type: Date,
+  },
+  // review
+});
 
-//MODELS
+// MODELS
 export const Bill = model<BillDocument>('Bill', billSchema);
 export const BillTC = composeMongoose<BillDocument, any>(Bill);
 
-//RELATIONS
+// RELATIONS
 BillTC.addRelation('products', {
   resolver() {
     return ProductTC.mongooseResolvers.dataLoaderMany();

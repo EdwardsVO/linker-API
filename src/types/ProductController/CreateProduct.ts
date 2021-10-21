@@ -22,17 +22,16 @@ export const CreateProductInput = `
 `;
 
 export type TCreateProductInput = {
-    createProductInfo: {
-        name: string;
-        description: string;
-        serial: string;
-        category: number;
-        price: number;
-        productStatus: number;
-        enterprise: EnterpriseDocument;
-        quantity: number;
-        units: number;
-    },
-    createProductImages: Array<string>;
-
-}
+  createProductInfo: {
+    name: string;
+    description: string;
+    serial: string;
+    category: number;
+    price: number;
+    productStatus: number;
+    enterprise: EnterpriseDocument;
+    quantity: number;
+    units: number;
+  };
+  createProductImages: Array<string>;
+};
