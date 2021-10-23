@@ -1,8 +1,5 @@
 import { Types } from 'mongoose';
-import { 
-    UserDocument,
-    ProductDocument
- } from '../../models';
+import { UserDocument, ProductDocument } from '../../models';
 
 export const CreateBillInput = `
     input CreateBillInput {
@@ -16,15 +13,14 @@ export const CreateBillInput = `
         totalPrice: Float!,
         review: String
     }
-`
+`;
 
-export type  TCreateBillInput = {
-    createBillInfoInput: {
-        client: UserDocument;
-        tax: number;
-        totalPrice: number;
-        review: string;
-    },
-    addingProducts: Array<ProductDocument>;
-
-}
+export type TCreateBillInput = {
+  createBillInfoInput: {
+    client: UserDocument;
+    tax: number;
+    totalPrice: number;
+    review: string;
+  };
+  addingProducts: Array<ProductDocument>;
+};

@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import { Types } from 'mongoose';
 
 export const CreateSupplierInput = `
   input CreateSupplierInput {
@@ -25,24 +25,24 @@ export const CreateSupplierInput = `
     category: Float!,
   }
 `;
-export type TCreateSupplierInput =  {
-    createUserInfo: {
-        username: string;
-        firstName: string;
-        lastName: string;
-        dni: string;
-        email: string;
-        photo: string;
-        role: number;
-        status: number;
-        phone: string;
-        enterprise: Types.ObjectId;
-    },
-    createEnterprise: {
-        name: string;
-        owner: Types.ObjectId;
-        rif: string;
-        status: number;
-        category: number;
-    }
+export type TCreateSupplierInput = {
+  createUserInfo: {
+    username: string;
+    firstName: string;
+    lastName: string;
+    dni: string;
+    email: string;
+    photo: string;
+    role: number;
+    status: number;
+    phone: string;
+    enterprise: Types.ObjectId;
+  };
+  createEnterprise: {
+    name: string;
+    owner: Types.ObjectId;
+    rif: string;
+    status: number;
+    category: number;
+  };
 };

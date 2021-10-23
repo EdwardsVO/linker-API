@@ -1,2 +1,2 @@
-export { CreateBillInput } from './CreateBill'
-export type { TCreateBillInput } from './CreateBill'
+export { CreateBillInput } from './CreateBill';
+export type { TCreateBillInput } from './CreateBill';

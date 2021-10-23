@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import { Types } from 'mongoose';
 
 export const CreateEntrepreneurInput = `
     input CreateEntrepreneurInput {
@@ -18,18 +18,18 @@ export const CreateEntrepreneurInput = `
       }
 `;
 
-export type TCreateEntrepreneurInput =  {
-    createEntrepreneurInfo: {
-        username: string;
-        firstName: string;
-        lastName: string;
-        dni: string;
-        email: string;
-        photo: string;
-        role: number;
-        status: number;
-        phone: string;
-    }
+export type TCreateEntrepreneurInput = {
+  createEntrepreneurInfo: {
+    username: string;
+    firstName: string;
+    lastName: string;
+    dni: string;
+    email: string;
+    photo: string;
+    role: number;
+    status: number;
+    phone: string;
+  };
 };
 
-//FALTA AGREGAR SUMMARY SHOP
+// FALTA AGREGAR SUMMARY SHOP
