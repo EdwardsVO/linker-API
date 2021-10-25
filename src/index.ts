@@ -54,6 +54,8 @@ server.applyMiddleware({
   },
 });
 
+console.log(process.env);
+console.log("Server Running!!!")
 // EXPRESS
 
 app.listen({ port: PORT }, () =>
