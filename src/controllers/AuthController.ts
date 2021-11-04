@@ -240,7 +240,7 @@ export const signOut = schemaComposer.createResolver({
     },
 });
 
-export const currentUser = schemaComposer.createResolver({
+export const me = schemaComposer.createResolver({
     name: 'currentUser',
     kind: 'query',
     description: 'Return the user object based on the token',
@@ -251,8 +251,11 @@ export const currentUser = schemaComposer.createResolver({
         if (!token) {
             return null;
         }
-        const payload = jwt.decode(token) as { id: string };
-        const user = User.findOne({ _id: payload.id, active: true });
+        const payload = jwt.decode(token as string);
+        const user = User.findById((payload as { id: string }).id);
+        if(!user) {
+            throw new ApolloError("User inexistente")
+        }
         return user;
     },
 });
