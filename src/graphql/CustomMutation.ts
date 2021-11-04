@@ -1,15 +1,23 @@
 import {
   signS3,
-  createSupplier,
   createProduct,
-  createEntrepreneur,
   createBill,
+  changePassword,
+  currentUser,
+  resetPassword,
+  signIn,
+  signOut,
+  signUp
 } from '../controllers';
 
 export default {
   signS3,
-  createSupplier,
   createProduct,
-  createEntrepreneur,
   createBill,
+  changePassword,
+  currentUser,
+  resetPassword,
+  signIn,
+  signOut,
+  signUp
 };

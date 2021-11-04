@@ -3,6 +3,7 @@ import { Schema, Document, Types, model } from 'mongoose';
 import { composeMongoose } from 'graphql-compose-mongoose';
 import { EnterpriseDocument, EnterpriseTC } from './Enterprise';
 import { ShoppingCartDocument, ShoppingCartTC } from './ShoppingCart';
+import bcrypt from 'bcryptjs';
 
 export interface UserDocument extends Document {
   username?: string;
@@ -16,6 +17,9 @@ export interface UserDocument extends Document {
   status?: number;
   category?: number;
   buyerRating?: number;
+  password?: string;
+  resetToken?: string;
+  resetTokenExpiry?: number;
   summaryShop?: Types.ObjectId; // || BillDocument[]
   enterprise?: EnterpriseDocument | Types.ObjectId; //
   reviewsMade?: Types.ObjectId; // || BuyerReviewDocument[]
@@ -60,6 +64,16 @@ const userSchema = new Schema<UserDocument>({
     trim: true,
     unique: true,
     required: [true, 'Ingrese correo'],
+  },
+  password: {
+    type: String,
+    required: [true, 'Ingrese Contraseña']
+  },
+  resetToken: {
+    type: String,
+  },
+  resetTokenExpiry: {
+    type: Number,
   },
   role: {
     type: Number,
@@ -106,6 +120,14 @@ const userSchema = new Schema<UserDocument>({
 });
 
 // PASSWORD HASHING
+
+userSchema.pre('save', async function (this: UserDocument, next) {
+  if (!this.isModified('password')) {
+    return next();
+  }
+  this.password = await bcrypt.hash(this.password, 10);
+  next();
+});
 
 // DOCUMENTS
 export const User = model<UserDocument>('User', userSchema);
