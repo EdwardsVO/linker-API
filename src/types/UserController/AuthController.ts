@@ -1,8 +1,8 @@
 import { Types } from 'mongoose';
 
-export const CreateSupplierInput = `
-  input CreateSupplierInput {
-    createUserInfo: CreateUserInfoInput,
+export const CreateUserInput = `
+  input CreateUserInput {
+    createUserInfo: CreateUserInfoInput!,
     createEnterprise: CreateEnterpriseInput
   }
   input CreateUserInfoInput {
@@ -15,6 +15,7 @@ export const CreateSupplierInput = `
     phone: String,
     role: Int,
     status: Float,
+    password: String!,
     enterprise: MongoID,
   }
   input CreateEnterpriseInput {
@@ -25,7 +26,7 @@ export const CreateSupplierInput = `
     category: Float!,
   }
 `;
-export type TCreateSupplierInput = {
+export type TCreateUserInput = {
   createUserInfo: {
     username: string;
     firstName: string;
@@ -36,6 +37,7 @@ export type TCreateSupplierInput = {
     role: number;
     status: number;
     phone: string;
+    password: string;
     enterprise: Types.ObjectId;
   };
   createEnterprise: {
