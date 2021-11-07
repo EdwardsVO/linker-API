@@ -11,7 +11,7 @@ export const CreateUserInput = `
     lastName: String!,
     dni: String,
     email: String!,
-    image: String,
+    photo: String,
     phone: String,
     role: Int,
     status: Float,
@@ -33,7 +33,7 @@ export type TCreateUserInput = {
     lastName: string;
     dni: string;
     email: string;
-    image: string;
+    photo: string;
     role: number;
     status: number;
     phone: string;
