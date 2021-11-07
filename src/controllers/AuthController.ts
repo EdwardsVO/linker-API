@@ -11,7 +11,6 @@ import { CreateUserInput, TCreateUserInput } from "../types";
 import {
   UserTC,
   User,
-  ShoppingCart,
   Enterprise,
   EnterpriseDocument,
 } from "../models";
@@ -51,11 +50,6 @@ export const signUp = schemaComposer.createResolver<
     }
 
     if (role === 1) {
-      const shopCart = await ShoppingCart.create({
-        products: [],
-      });
-      console.log(shopCart);
-
       // CREATING NEW ENTREPRENEUR
       const entrepreneur = await User.create({
         username,
@@ -68,9 +62,7 @@ export const signUp = schemaComposer.createResolver<
         role,
         status: 1,
       });
-      entrepreneur.shoppingCart = shopCart;
-      entrepreneur.save();
-      console.log(entrepreneur);
+  
       const token = jwt.sign(
         {
           id: entrepreneur._id,
