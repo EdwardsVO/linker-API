@@ -41,7 +41,7 @@ export const signUp = schemaComposer.createResolver<
   kind: "mutation",
   args: { data: CreateUserInput },
   async resolve({ args, context }) {
-    const { username, firstName, lastName, dni, email, photo, password, role } =
+    const { username, firstName, lastName, dni, email, image, password, role } =
       args.data.createUserInfo;
 
     const userFromDB = await User.findOne({ email });
@@ -63,7 +63,7 @@ export const signUp = schemaComposer.createResolver<
         lastName,
         dni,
         email,
-        photo,
+        image,
         password,
         role,
         status: 1,
@@ -111,7 +111,7 @@ export const signUp = schemaComposer.createResolver<
           lastName,
           dni,
           email,
-          photo,
+          image,
           password,
           role,
           status: 1,
