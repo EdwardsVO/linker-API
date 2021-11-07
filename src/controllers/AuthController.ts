@@ -11,7 +11,7 @@ import { CreateUserInput, TCreateUserInput } from "../types";
 import {
   UserTC,
   User,
-  ShoppingCart,
+  Favorites,
   Enterprise,
   EnterpriseDocument,
 } from "../models";
@@ -41,7 +41,7 @@ export const signUp = schemaComposer.createResolver<
   kind: "mutation",
   args: { data: CreateUserInput },
   async resolve({ args, context }) {
-    const { username, firstName, lastName, dni, email, photo, password, role } =
+    const { username, firstName, lastName, dni, email, image, password, role } =
       args.data.createUserInfo;
 
     const userFromDB = await User.findOne({ email });
@@ -51,10 +51,10 @@ export const signUp = schemaComposer.createResolver<
     }
 
     if (role === 1) {
-      const shopCart = await ShoppingCart.create({
-        products: [],
+      const favorite = await Favorites.create({
+        favorite: [],
       });
-      console.log(shopCart);
+      console.log(favorite);
 
       // CREATING NEW ENTREPRENEUR
       const entrepreneur = await User.create({
@@ -63,12 +63,12 @@ export const signUp = schemaComposer.createResolver<
         lastName,
         dni,
         email,
-        photo,
+        image,
         password,
         role,
         status: 1,
       });
-      entrepreneur.shoppingCart = shopCart;
+      entrepreneur.favorites = favorite;
       entrepreneur.save();
       console.log(entrepreneur);
       const token = jwt.sign(
@@ -111,7 +111,7 @@ export const signUp = schemaComposer.createResolver<
           lastName,
           dni,
           email,
-          photo,
+          image,
           password,
           role,
           status: 1,

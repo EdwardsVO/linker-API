@@ -2,7 +2,7 @@
 import { Schema, Document, Types, model } from 'mongoose';
 import { composeMongoose } from 'graphql-compose-mongoose';
 import { EnterpriseDocument, EnterpriseTC } from './Enterprise';
-import { ShoppingCartDocument, ShoppingCartTC } from './ShoppingCart';
+import { FavoritesDocument, FavoritesTC } from './ShoppingCart';
 import bcrypt from 'bcryptjs';
 
 export interface UserDocument extends Document {
@@ -26,7 +26,7 @@ export interface UserDocument extends Document {
   questionsMade?: Types.ObjectId; // ||QuestionsMadeDocument[]
   createdAt?: Date;
   updatedAt?: Date;
-  shoppingCart?: ShoppingCartDocument | Types.ObjectId;
+  favorites?: FavoritesDocument | Types.ObjectId;
 }
 
 const userSchema = new Schema<UserDocument>({
@@ -113,7 +113,7 @@ const userSchema = new Schema<UserDocument>({
       ref: 'questionsMade',
     },
   ],
-  shoppingCart: {
+  favorites: {
     type: Schema.Types.ObjectId,
     ref: 'shoppingCart',
   },
@@ -149,10 +149,10 @@ UserTC.addRelation('enterprise', {
 
 UserTC.addRelation('shoppingCart', {
   resolver() {
-    return ShoppingCartTC.mongooseResolvers.dataLoader();
+    return FavoritesTC.mongooseResolvers.dataLoader();
   },
   prepareArgs: {
-    _id: (source) => source.shoppingCart,
+    _id: (source) => source.favorites,
     skip: null,
     sort: null,
   },
