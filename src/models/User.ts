@@ -2,7 +2,6 @@
 import { Schema, Document, Types, model } from 'mongoose';
 import { composeMongoose } from 'graphql-compose-mongoose';
 import { EnterpriseDocument, EnterpriseTC } from './Enterprise';
-import { ShoppingCartDocument, ShoppingCartTC } from './ShoppingCart';
 import bcrypt from 'bcryptjs';
 
 export interface UserDocument extends Document {
@@ -26,7 +25,6 @@ export interface UserDocument extends Document {
   questionsMade?: Types.ObjectId; // ||QuestionsMadeDocument[]
   createdAt?: Date;
   updatedAt?: Date;
-  shoppingCart?: ShoppingCartDocument | Types.ObjectId;
 }
 
 const userSchema = new Schema<UserDocument>({
@@ -112,11 +110,7 @@ const userSchema = new Schema<UserDocument>({
       type: Schema.Types.ObjectId,
       ref: 'questionsMade',
     },
-  ],
-  shoppingCart: {
-    type: Schema.Types.ObjectId,
-    ref: 'shoppingCart',
-  },
+  ]
 });
 
 // PASSWORD HASHING
@@ -145,18 +139,6 @@ UserTC.addRelation('enterprise', {
     sort: null,
   },
   projection: { enterprise: 1 },
-});
-
-UserTC.addRelation('shoppingCart', {
-  resolver() {
-    return ShoppingCartTC.mongooseResolvers.dataLoader();
-  },
-  prepareArgs: {
-    _id: (source) => source.shoppingCart,
-    skip: null,
-    sort: null,
-  },
-  projection: { shoppingCart: 1 },
 });
 
 // RELACION CON BILLS
