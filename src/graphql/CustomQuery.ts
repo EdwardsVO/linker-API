@@ -1,7 +1,5 @@
-import { 
-    me
-} from '../controllers';
+import { currentUser } from "../controllers";
 
 export default {
-    me
+  currentUser,
 };

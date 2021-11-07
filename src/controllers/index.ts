@@ -1,11 +1,11 @@
-export { createProduct } from './ProductController';
-export { createBill } from './BillController';
-export { signS3 } from './ImagesSchema';
-export { 
-    me,
-    changePassword,
-    resetPassword,
-    signIn,
-    signUp,
-    signOut    
-} from './AuthController';
+export { createProduct } from "./ProductController";
+export { createBill } from "./BillController";
+export { signS3 } from "./ImagesSchema";
+export {
+  currentUser,
+  changePassword,
+  resetPassword,
+  signIn,
+  signUp,
+  signOut,
+} from "./AuthController";
