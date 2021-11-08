@@ -1,10 +1,11 @@
-import { Schema, Document, Types, model } from 'mongoose';
-import { composeMongoose } from 'graphql-compose-mongoose';
-import { ProductDocument, ProductTC } from './Product';
-import { UserDocument, UserTC } from './User';
+import { Schema, Document, Types, model } from "mongoose";
+import { composeMongoose } from "graphql-compose-mongoose";
+import { ProductDocument, ProductTC } from "./Product";
+import { UserDocument, UserTC } from "./User";
 
 export interface EnterpriseDocument extends Document {
   name?: string;
+  banner?: string;
   owner?: UserDocument | Types.ObjectId;
   rif?: string;
   registrationDate?: Date;
@@ -19,7 +20,7 @@ export interface EnterpriseDocument extends Document {
 const enterpriseSchema = new Schema<EnterpriseDocument>({
   name: {
     type: String,
-    required: [true, 'Ingrese nombre de empresa'],
+    required: [true, "Ingrese nombre de empresa"],
   },
   status: {
     type: Number,
@@ -35,37 +36,41 @@ const enterpriseSchema = new Schema<EnterpriseDocument>({
   },
   owner: {
     type: Schema.Types.ObjectId,
-    ref: 'Owner',
+    ref: "Owner",
   },
   rif: {
     type: String,
     unique: true,
     trim: true,
-    required: [true, 'Ingrese RIF de la empresa'],
+    required: [true, "Ingrese RIF de la empresa"],
   },
   products: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'Products',
+      ref: "Products",
     },
   ],
   salesSummary: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'salesSummary',
+      ref: "salesSummary",
     },
   ],
   commentsMadeIt: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'commentsMadeIt',
+      ref: "commentsMadeIt",
     },
   ],
+  banner: {
+    type: String,
+    default: "https://linker-files.sfo3.digitaloceanspaces.com/ent.jpg",
+  },
 });
 // MODELS
 
 export const Enterprise = model<EnterpriseDocument>(
-  'Enterprise',
+  "Enterprise",
   enterpriseSchema
 );
 export const EnterpriseTC = composeMongoose<EnterpriseDocument, any>(
@@ -74,7 +79,7 @@ export const EnterpriseTC = composeMongoose<EnterpriseDocument, any>(
 
 // RELATIONS
 
-EnterpriseTC.addRelation('products', {
+EnterpriseTC.addRelation("products", {
   resolver() {
     return ProductTC.mongooseResolvers.dataLoaderMany();
   },
@@ -86,7 +91,7 @@ EnterpriseTC.addRelation('products', {
   projection: { products: 1 },
 });
 
-EnterpriseTC.addRelation('owner', {
+EnterpriseTC.addRelation("owner", {
   resolver() {
     return UserTC.mongooseResolvers.dataLoader();
   },

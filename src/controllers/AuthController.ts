@@ -151,6 +151,7 @@ export const signUp = schemaComposer.createResolver<
           rif,
           status: 1,
           category,
+          banner: "https://linker-files.sfo3.digitaloceanspaces.com/ent.jpg",
         });
         return newSupplier(enterprise);
       };
