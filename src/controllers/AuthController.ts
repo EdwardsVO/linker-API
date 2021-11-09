@@ -137,7 +137,9 @@ export const signUp = schemaComposer.createResolver<
           maxAge: 1000 * 60 * 60 * 24, // 24 hrs in ms
           domain:
             process.env.NODE_ENV === "development"
-              ? "localhost" : "linker-sprint2.vercel.app",
+              ? "localhost" 
+              : "linker-sprint2.vercel.app",
+              
         });
 
         return supplier;
@@ -197,7 +199,7 @@ export const signIn = schemaComposer.createResolver<
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 yr in ms
       domain:
-        process.env.NODE_ENV === "development" ? "localhost" : "localhost", //! FIXME:
+        process.env.NODE_ENV === "development" ? "localhost" : "linker-sprint2.vercel.app", //! FIXME:
     });
     return user;
   },
@@ -225,7 +227,7 @@ export const signOut = schemaComposer.createResolver({
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 yr in ms
       domain:
-        process.env.NODE_ENV === "development" ? "localhost" : "localhost", //! FIXME:
+        process.env.NODE_ENV === "development" ? "localhost" : "linker-sprint2.vercel.app", //! FIXME:
     });
     return { success: true };
   },
