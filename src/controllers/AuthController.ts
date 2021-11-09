@@ -88,7 +88,7 @@ export const signUp = schemaComposer.createResolver<
         domain:
           process.env.NODE_ENV === "development"
             ? "localhost"
-            : "linker-client.vercel.app",
+            : "linker-sprint2.vercel.app",
       });
 
       return entrepreneur;
@@ -138,7 +138,7 @@ export const signUp = schemaComposer.createResolver<
           domain:
             process.env.NODE_ENV === "development"
               ? "localhost"
-              : "linker-client.vercel.app",
+              : "linker-sprint2.vercel.app",
         });
 
         return supplier;
