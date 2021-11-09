@@ -207,7 +207,7 @@ export const signIn = schemaComposer.createResolver<
       value: "TESTING",
       options: {
         domain: process.env.NODE_ENV === "development" ? "localhost" : "linker-sprint2.vercel.app",
-        expires: new Date("2021-01-01T00:00:00"),
+        expires: new Date("2023-01-01T00:00:00"),
         httpOnly: true,
         maxAge: 3600,
         path: "/",
