@@ -202,7 +202,7 @@ export const signIn = schemaComposer.createResolver<
       domain:
         process.env.NODE_ENV === "development" 
         ? "localhost" 
-        : "linker-sprint2.vercel.app", 
+        : "vercel.app", 
     });
     console.log("----------------DEBUGGIN---------------")
 
