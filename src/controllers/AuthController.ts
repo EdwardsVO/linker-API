@@ -137,8 +137,7 @@ export const signUp = schemaComposer.createResolver<
           maxAge: 1000 * 60 * 60 * 24, // 24 hrs in ms
           domain:
             process.env.NODE_ENV === "development"
-              ? "localhost"
-              : "linker-sprint2.vercel.app",
+              ? "localhost" : "linker-sprint2.vercel.app",
         });
 
         return supplier;
