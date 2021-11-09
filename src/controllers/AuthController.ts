@@ -194,19 +194,19 @@ export const signIn = schemaComposer.createResolver<
       },
       process.env.SECRET
     );
-    await context.res.cookie("token", token, {
+    context.res.cookie("token", token, {
       secure: true,
       sameSite: "None",
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 yr in ms
       domain:
-        process.env.NODE_ENV === "development" 
-        ? "localhost" 
-        : "vercel.app", 
+        process.env.NODE_ENV === "development"
+          ? "localhost"
+          : "vercel.app",
     });
     console.log("----------------DEBUGGIN---------------")
 
-   
+
     console.log("El token es: " + token)
 
     console.log("Contexto actual: " + context.res.cookie)
