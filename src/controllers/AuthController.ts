@@ -187,18 +187,22 @@ export const signIn = schemaComposer.createResolver<
       throw new ApolloError(`La contraseña es incorrecta ${args?.data?.email}`);
     }
     const token = jwt.sign(
-      JSON.stringify({
+      {
         id: user._id,
-      }),
+        role: user.role,
+        emission: new Date().toISOString()
+      },
       process.env.SECRET
     );
     await context.res.cookie("token", token, {
       secure: true,
-      sameSite: "none",
+      sameSite: "None",
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 yr in ms
       domain:
-        process.env.NODE_ENV === "development" ? "localhost" : "linker-sprint2.vercel.app" 
+        process.env.NODE_ENV === "development" 
+        ? "localhost" 
+        : "linker-sprint2.vercel.app", 
     });
     console.log("----------------DEBUGGIN---------------")
 
