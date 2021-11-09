@@ -141,7 +141,6 @@ export const signUp = schemaComposer.createResolver<
               : "linker-sprint2.vercel.app",
               
         });
-
         return supplier;
       };
 
@@ -201,6 +200,10 @@ export const signIn = schemaComposer.createResolver<
       domain:
         process.env.NODE_ENV === "development" ? "localhost" : "linker-sprint2.vercel.app", //! FIXME:
     });
+    console.log("----------------DEBUGGIN---------------")
+    console.log("El token es: " + token)
+
+    console.log("Contexto actual: " + context.res)
     return user;
   },
 });
