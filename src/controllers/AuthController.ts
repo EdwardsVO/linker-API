@@ -88,7 +88,7 @@ export const signUp = schemaComposer.createResolver<
         domain:
           process.env.NODE_ENV === "development"
             ? "localhost"
-            : "linker-sprint2.vercel.app"
+            : "linkerapp.store"
       });
 
       return entrepreneur;
@@ -138,7 +138,7 @@ export const signUp = schemaComposer.createResolver<
           domain:
             process.env.NODE_ENV === "development"
               ? "localhost"
-              : "linker-sprint2.vercel.app"
+              : "linkerapp.store"
 
         });
         return supplier;
@@ -202,14 +202,9 @@ export const signIn = schemaComposer.createResolver<
       domain:
         process.env.NODE_ENV === "development"
           ? "localhost"
-          : "vercel.app",
+          : "linkerapp.store",
     });
-    console.log("----------------DEBUGGIN---------------")
-
-
-    console.log("El token es: " + token)
-
-    console.log("Contexto actual: " + context.res.cookie)
+  
     return user;
   },
 });
@@ -236,7 +231,7 @@ export const signOut = schemaComposer.createResolver({
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 yr in ms
       domain:
-        process.env.NODE_ENV === "development" ? "localhost" : "linker-sprint2.vercel.app" //! FIXME:
+        process.env.NODE_ENV === "development" ? "localhost" : "linkerapp.store" //! FIXME:
     });
     return { success: true };
   },
