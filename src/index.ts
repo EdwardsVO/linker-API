@@ -29,8 +29,7 @@ const server: ApolloServer = new ApolloServer({
   context: ({ req, res }) => {
     if ((req?.body?.operationName ?? '') !== 'IntrospectionQuery') {
       console.log(
-        `GraphQL: ${req?.body?.operationName ?? '-'} ${
-          req.headers['content-length']
+        `GraphQL: ${req?.body?.operationName ?? '-'} ${req.headers['content-length']
         }`
       );
     }
@@ -54,9 +53,12 @@ server.applyMiddleware({
   },
 });
 
-console.log("Server Running!!!")
 // EXPRESS
 
-app.listen({ port: PORT }, () =>
-  console.log(`🚀🛸Server ready at http://localhost:${PORT}`)
-);
+app.listen({ port: PORT }, () => {
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`🚀🛸Server ready at http://localhost:${PORT}`)
+  }
+
+  console.log("Server Running!!!")
+});
