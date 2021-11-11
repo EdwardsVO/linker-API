@@ -88,7 +88,7 @@ export const signUp = schemaComposer.createResolver<
         domain:
           process.env.NODE_ENV === "development"
             ? "localhost"
-            : "linker-sprint2.vercel.app",
+            : "linkerapp.store"
       });
 
       return entrepreneur;
@@ -137,11 +137,10 @@ export const signUp = schemaComposer.createResolver<
           maxAge: 1000 * 60 * 60 * 24, // 24 hrs in ms
           domain:
             process.env.NODE_ENV === "development"
-              ? "localhost" 
-              : "linker-sprint2.vercel.app",
-              
-        });
+              ? "localhost"
+              : "linkerapp.store"
 
+        });
         return supplier;
       };
 
@@ -188,19 +187,24 @@ export const signIn = schemaComposer.createResolver<
       throw new ApolloError(`La contraseña es incorrecta ${args?.data?.email}`);
     }
     const token = jwt.sign(
-      JSON.stringify({
+      {
         id: user._id,
-      }),
+        role: user.role,
+        emission: new Date().toISOString()
+      },
       process.env.SECRET
     );
     context.res.cookie("token", token, {
       secure: true,
-      sameSite: "none",
+      sameSite: "None",
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 yr in ms
       domain:
-        process.env.NODE_ENV === "development" ? "localhost" : "linker-sprint2.vercel.app", //! FIXME:
+        process.env.NODE_ENV === "development"
+          ? "localhost"
+          : "linkerapp.store",
     });
+  
     return user;
   },
 });
@@ -227,7 +231,7 @@ export const signOut = schemaComposer.createResolver({
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 yr in ms
       domain:
-        process.env.NODE_ENV === "development" ? "localhost" : "linker-sprint2.vercel.app", //! FIXME:
+        process.env.NODE_ENV === "development" ? "localhost" : "linkerapp.store" //! FIXME:
     });
     return { success: true };
   },
