@@ -53,9 +53,9 @@ export const signUp = schemaComposer.createResolver<
 
     if (role === 1) {
       const favorite = await Favorites.create({
-        favorite: [],
+        products: [],
       });
-      const shoppingCart = await ShoppingCart.create({
+      const newShoppingCart = await ShoppingCart.create({
           products: []
       })
       console.log(favorite);
@@ -74,7 +74,7 @@ export const signUp = schemaComposer.createResolver<
         status: 1,
       });
       entrepreneur.favorites = favorite;
-      entrepreneur.shoppingCart = shoppingCart;
+      entrepreneur.shoppingCart = newShoppingCart;
       entrepreneur.save();
       console.log(entrepreneur);
       const token = jwt.sign(

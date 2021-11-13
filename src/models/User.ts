@@ -123,8 +123,12 @@ const userSchema = new Schema<UserDocument>({
   ],
   favorites: {
     type: Schema.Types.ObjectId,
-    ref: 'shoppingCart',
+    ref: 'favorites',
   },
+  shoppingCart: {
+    type: Schema.Types.ObjectId,
+    ref: 'shoppingCart'
+  }
 });
 
 // PASSWORD HASHING
@@ -162,26 +166,13 @@ UserTC.addRelation('shoppingCart', {
     return ShoppingCartTC.mongooseResolvers.dataLoader();
   },
   prepareArgs: {
-    _id: (source) => source.favorites,
+    _id: (source) => source.shoppingCart,
     skip: null,
     sort: null,
   },
   projection: { shoppingCart: 1 },
 });
 
-// BILLS RELATION
-
-UserTC.addRelation('bill', {
-  resolver() {
-    return BillTC.mongooseResolvers.dataLoader();
-  },
-  prepareArgs: {
-    _id: (source) => source.favorites,
-    skip: null,
-    sort: null,
-  },
-  projection: { bill: 1 },
-});
 
 // FAVORITES RELATION
 UserTC.addRelation('favorites', {

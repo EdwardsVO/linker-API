@@ -16,7 +16,7 @@ const favoritesSchema = new Schema<FavoritesDocument>({
 });
 
 export const Favorites = model<FavoritesDocument>(
-  '',
+  'Favorites',
   favoritesSchema
 );
 export const FavoritesTC = composeMongoose<FavoritesDocument, any>(
