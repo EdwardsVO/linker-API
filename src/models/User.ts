@@ -2,7 +2,9 @@
 import { Schema, Document, Types, model } from 'mongoose';
 import { composeMongoose } from 'graphql-compose-mongoose';
 import { EnterpriseDocument, EnterpriseTC } from './Enterprise';
-import { FavoritesDocument, FavoritesTC } from './ShoppingCart';
+import { FavoritesDocument, FavoritesTC } from './Favorites';
+import {ShoppingCartDocument, ShoppingCartTC } from './ShoppingCart';
+import { BillDocument, BillTC } from './Bill';
 import bcrypt from 'bcryptjs';
 
 export interface UserDocument extends Document {
@@ -21,7 +23,8 @@ export interface UserDocument extends Document {
   password?: string;
   resetToken?: string;
   resetTokenExpiry?: number;
-  summaryShop?: Types.ObjectId; // || BillDocument[]
+  summaryShop?: BillDocument | Types.ObjectId;
+  shoppingCart?: ShoppingCartDocument | Types.ObjectId;   
   enterprise?: EnterpriseDocument | Types.ObjectId; //
   reviewsMade?: Types.ObjectId; // || BuyerReviewDocument[]
   questionsMade?: Types.ObjectId; // ||QuestionsMadeDocument[]
@@ -140,6 +143,7 @@ export const UserTC = composeMongoose<UserDocument, any>(User);
 
 // ADDING RELATIONS
 
+//ENTERPRISE RELATION
 UserTC.addRelation('enterprise', {
   resolver() {
     return EnterpriseTC.mongooseResolvers.dataLoader();
@@ -152,9 +156,10 @@ UserTC.addRelation('enterprise', {
   projection: { enterprise: 1 },
 });
 
+//SHOPPING CART RELATION
 UserTC.addRelation('shoppingCart', {
   resolver() {
-    return FavoritesTC.mongooseResolvers.dataLoader();
+    return ShoppingCartTC.mongooseResolvers.dataLoader();
   },
   prepareArgs: {
     _id: (source) => source.favorites,
@@ -164,4 +169,30 @@ UserTC.addRelation('shoppingCart', {
   projection: { shoppingCart: 1 },
 });
 
-// RELACION CON BILLS
+// BILLS RELATION
+
+UserTC.addRelation('bill', {
+  resolver() {
+    return BillTC.mongooseResolvers.dataLoader();
+  },
+  prepareArgs: {
+    _id: (source) => source.favorites,
+    skip: null,
+    sort: null,
+  },
+  projection: { bill: 1 },
+});
+
+// FAVORITES RELATION
+UserTC.addRelation('favorites', {
+  resolver() {
+    return FavoritesTC.mongooseResolvers.dataLoader();
+  },
+  prepareArgs: {
+    _id: (source) => source.favorites,
+    skip: null,
+    sort: null,
+  },
+  projection: { favorites: 1 },
+});
+
