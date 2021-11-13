@@ -4,6 +4,7 @@ import {
   ProductTC,
   BillTC,
   FavoritesTC,
+  TransactionTC,
 } from '../models/index.js';
 
 // USER
@@ -27,6 +28,9 @@ const Query = {
   // SHOPPING CART
   favorite: FavoritesTC.mongooseResolvers.findOne(),
   favorites: FavoritesTC.mongooseResolvers.findMany(),
+  //TRANSACTIONS
+  transaction: TransactionTC.mongooseResolvers.findOne(),
+  transactions: TransactionTC.mongooseResolvers.findMany(),
 };
 
 export default Query;
