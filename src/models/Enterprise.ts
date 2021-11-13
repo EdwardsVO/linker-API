@@ -7,6 +7,7 @@ export interface EnterpriseDocument extends Document {
   name?: string;
   banner?: string;
   owner?: UserDocument | Types.ObjectId;
+  balance?: number;
   rif?: string;
   registrationDate?: Date;
   status?: number;
@@ -37,6 +38,10 @@ const enterpriseSchema = new Schema<EnterpriseDocument>({
   owner: {
     type: Schema.Types.ObjectId,
     ref: "Owner",
+  },
+  balance: {
+    type: Number,
+    default: 0
   },
   rif: {
     type: String,
