@@ -19,7 +19,7 @@ const billSchema = new Schema<BillDocument>({
   },
   products: [{
     type: Schema.Types.ObjectId,
-    required: [ true, 'Ingrese carrito' ]
+    ref: 'products'
   }],
   totalPrice: {
     type: Number,
