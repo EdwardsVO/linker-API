@@ -1,7 +1,7 @@
 import { ApolloError } from 'apollo-server';
 import { schemaComposer } from 'graphql-compose';
 import { CreateBillInput, TCreateBillInput } from '../types';
-import { BillTC, Bill } from '../models';
+import { BillTC, Bill, User, Enterprise } from '../models';
 
 export const createBill = schemaComposer.createResolver<
   any,
@@ -18,22 +18,49 @@ export const createBill = schemaComposer.createResolver<
     // SECURITY
 
     // ARGS
-    const { client, tax, totalPrice } = args.data.createBillInfoInput;
-
+    const { client, totalPrice, enterprise } = args.data.createBillInfoInput;
     const products = args.data.addingProducts;
+    const taxCharge = 0.16 // 16% TAX FOR EACH PURCHASE
+    const clientIn = await User.findById(client).exec();
+    const enterpriseIn = await Enterprise.findById(enterprise).exec();
 
-    // VALIDATORS
+    const initPurchasing = async() => {
 
-    // GENERATING A NEW BILL
-    const bill = await Bill.create({
-      tax,
-      totalPrice,
-      client,
-      products,
-      status: 0,
-    });
-    console.log(products);
-    console.log(bill);
-    return bill;
+      const tax = totalPrice * taxCharge 
+      var currentClientBalance = clientIn.get('balance');
+      var currentSummaryShop = clientIn.get('summaryShop'); //GETTING THE CLIENT SUMMARY SHOP TO PUSH THE NEW BILL
+      if(currentClientBalance < totalPrice) {
+        throw new ApolloError('Saldo insuficiente') //VALIDATION
+      }
+
+      // GENERATING THE BILL
+      const bill = await Bill.create({
+        enterprise,
+        tax,
+        products,
+        totalPrice,
+        client,
+        status: 1,
+      });
+
+      currentClientBalance -= totalPrice; //REDUCING THE BALANCE AFTER THE PURCHASE
+      clientIn.balance = currentClientBalance;
+      currentSummaryShop.push(bill); 
+      clientIn.summaryShop = currentSummaryShop; //PUSHING THE CLIENT PURCHASE SUMMARY THE GENERATED BILL
+      await clientIn.save()
+
+      const currentSalesSummary = enterpriseIn.get('salesSummary');
+      var currentEnterpriseBalance = enterpriseIn.get('balance');
+      currentSalesSummary.push(bill);
+      enterpriseIn.salesSummary = currentSalesSummary; //PUSHING ENTERPRISE THE GENERATED BILL 
+      currentEnterpriseBalance += totalPrice;
+      enterpriseIn.balance = currentEnterpriseBalance; //ADDING THE NEW BALANCE OF THE ENTERPRISE AFTER THE SALE
+      await enterpriseIn.save();
+
+      return bill;
+    }
+
+    return initPurchasing();
+  
   },
 });
