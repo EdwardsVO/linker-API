@@ -66,6 +66,7 @@ export const signUp = schemaComposer.createResolver<
         image,
         password,
         role,
+        balance: 0,
         status: 1,
       });
       entrepreneur.favorites = favorite;
@@ -115,6 +116,7 @@ export const signUp = schemaComposer.createResolver<
           password,
           role,
           status: 1,
+          balance: 0,
           enterprise: enterprise._id,
         });
         enterprise.owner = supplier._id;

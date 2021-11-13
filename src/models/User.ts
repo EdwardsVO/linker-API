@@ -13,6 +13,7 @@ export interface UserDocument extends Document {
   image?: string;
   phone?: string;
   email?: string;
+  balance?: number;
   role?: number;
   status?: number;
   category?: number;
@@ -64,6 +65,10 @@ const userSchema = new Schema<UserDocument>({
     trim: true,
     unique: true,
     required: [true, 'Ingrese correo'],
+  },
+  balance: {
+    type: Number,
+    default: 0
   },
   password: {
     type: String,
