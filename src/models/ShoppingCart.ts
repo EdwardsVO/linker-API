@@ -2,11 +2,11 @@ import { Schema, Document, Types, model } from 'mongoose';
 import { composeMongoose } from 'graphql-compose-mongoose';
 import { ProductDocument, ProductTC } from './Product';
 
-export interface FavoritesDocument extends Document {
+export interface ShoppingCartDocument extends Document {
   products?: Array<ProductDocument>;
 }
 
-const favoritesSchema = new Schema<FavoritesDocument>({
+const shoppingCartSchema = new Schema<ShoppingCartDocument>({
   products: [
     {
       type: Schema.Types.ObjectId,
@@ -15,17 +15,17 @@ const favoritesSchema = new Schema<FavoritesDocument>({
   ],
 });
 
-export const Favorites = model<FavoritesDocument>(
-  'Favorites',
-  favoritesSchema
+export const ShoppingCart = model<ShoppingCartDocument>(
+  'ShoppingCart',
+  shoppingCartSchema
 );
-export const FavoritesTC = composeMongoose<FavoritesDocument, any>(
-  Favorites
+export const ShoppingCartTC = composeMongoose<ShoppingCartDocument, any>(
+  ShoppingCart
 );
 
 // RELATIONS
 
-FavoritesTC.addRelation('products', {
+ShoppingCartTC.addRelation('products', {
   resolver() {
     return ProductTC.mongooseResolvers.dataLoaderMany();
   },

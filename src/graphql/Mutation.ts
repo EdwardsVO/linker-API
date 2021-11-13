@@ -3,6 +3,7 @@ import {
   EnterpriseTC,
   ProductTC,
   FavoritesTC,
+  ShoppingCartTC
 } from '../models/index.js';
 
 // USER
@@ -21,9 +22,14 @@ const Mutation = {
   removeProduct: ProductTC.mongooseResolvers.removeOne(),
   updateProduct: ProductTC.mongooseResolvers.updateOne(),
   // SHOPPING CART
+  createShoppingCart: ShoppingCartTC.mongooseResolvers.createOne(),
+  removeShoppingCart: ShoppingCartTC.mongooseResolvers.removeOne(),
+  updateShoppingCart: ShoppingCartTC.mongooseResolvers.updateOne(),
+  //FAVORITES
   createFavorites: FavoritesTC.mongooseResolvers.createOne(),
   removeFavorites: FavoritesTC.mongooseResolvers.removeOne(),
   updateFavorites: FavoritesTC.mongooseResolvers.updateOne(),
+
 };
 
 export default Mutation;

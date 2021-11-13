@@ -2,7 +2,9 @@
 import { Schema, Document, Types, model } from 'mongoose';
 import { composeMongoose } from 'graphql-compose-mongoose';
 import { EnterpriseDocument, EnterpriseTC } from './Enterprise';
-import { FavoritesDocument, FavoritesTC } from './ShoppingCart';
+import { FavoritesDocument, FavoritesTC } from './Favorites';
+import {ShoppingCartDocument, ShoppingCartTC } from './ShoppingCart';
+import { BillDocument, BillTC } from './Bill';
 import bcrypt from 'bcryptjs';
 
 export interface UserDocument extends Document {
@@ -13,6 +15,7 @@ export interface UserDocument extends Document {
   image?: string;
   phone?: string;
   email?: string;
+  balance?: number;
   role?: number;
   status?: number;
   category?: number;
@@ -20,7 +23,8 @@ export interface UserDocument extends Document {
   password?: string;
   resetToken?: string;
   resetTokenExpiry?: number;
-  summaryShop?: Types.ObjectId; // || BillDocument[]
+  summaryShop?: BillDocument | Types.ObjectId;
+  shoppingCart?: ShoppingCartDocument | Types.ObjectId;   
   enterprise?: EnterpriseDocument | Types.ObjectId; //
   reviewsMade?: Types.ObjectId; // || BuyerReviewDocument[]
   questionsMade?: Types.ObjectId; // ||QuestionsMadeDocument[]
@@ -64,6 +68,10 @@ const userSchema = new Schema<UserDocument>({
     trim: true,
     unique: true,
     required: [true, 'Ingrese correo'],
+  },
+  balance: {
+    type: Number,
+    default: 0
   },
   password: {
     type: String,
@@ -115,8 +123,12 @@ const userSchema = new Schema<UserDocument>({
   ],
   favorites: {
     type: Schema.Types.ObjectId,
-    ref: 'shoppingCart',
+    ref: 'favorites',
   },
+  shoppingCart: {
+    type: Schema.Types.ObjectId,
+    ref: 'shoppingCart'
+  }
 });
 
 // PASSWORD HASHING
@@ -135,6 +147,7 @@ export const UserTC = composeMongoose<UserDocument, any>(User);
 
 // ADDING RELATIONS
 
+//ENTERPRISE RELATION
 UserTC.addRelation('enterprise', {
   resolver() {
     return EnterpriseTC.mongooseResolvers.dataLoader();
@@ -147,7 +160,22 @@ UserTC.addRelation('enterprise', {
   projection: { enterprise: 1 },
 });
 
+//SHOPPING CART RELATION
 UserTC.addRelation('shoppingCart', {
+  resolver() {
+    return ShoppingCartTC.mongooseResolvers.dataLoader();
+  },
+  prepareArgs: {
+    _id: (source) => source.shoppingCart,
+    skip: null,
+    sort: null,
+  },
+  projection: { shoppingCart: 1 },
+});
+
+
+// FAVORITES RELATION
+UserTC.addRelation('favorites', {
   resolver() {
     return FavoritesTC.mongooseResolvers.dataLoader();
   },
@@ -156,7 +184,6 @@ UserTC.addRelation('shoppingCart', {
     skip: null,
     sort: null,
   },
-  projection: { shoppingCart: 1 },
+  projection: { favorites: 1 },
 });
 
-// RELACION CON BILLS

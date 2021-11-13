@@ -14,6 +14,7 @@ import {
   Favorites,
   Enterprise,
   EnterpriseDocument,
+  ShoppingCart
 } from "../models";
 
 type TSignInInput = {
@@ -52,8 +53,11 @@ export const signUp = schemaComposer.createResolver<
 
     if (role === 1) {
       const favorite = await Favorites.create({
-        favorite: [],
+        products: [],
       });
+      const newShoppingCart = await ShoppingCart.create({
+          products: []
+      })
       console.log(favorite);
 
       // CREATING NEW ENTREPRENEUR
@@ -66,9 +70,11 @@ export const signUp = schemaComposer.createResolver<
         image,
         password,
         role,
+        balance: 0,
         status: 1,
       });
       entrepreneur.favorites = favorite;
+      entrepreneur.shoppingCart = newShoppingCart;
       entrepreneur.save();
       console.log(entrepreneur);
       const token = jwt.sign(
@@ -115,6 +121,7 @@ export const signUp = schemaComposer.createResolver<
           password,
           role,
           status: 1,
+          balance: 0,
           enterprise: enterprise._id,
         });
         enterprise.owner = supplier._id;
