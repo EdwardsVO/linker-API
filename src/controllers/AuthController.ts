@@ -94,7 +94,7 @@ export const signUp = schemaComposer.createResolver<
         domain:
           process.env.NODE_ENV === "development"
             ? "localhost"
-            : "api.linkerapp.store"
+            : "herokuapp.com"
       });
 
       return entrepreneur;
@@ -145,7 +145,7 @@ export const signUp = schemaComposer.createResolver<
           domain:
             process.env.NODE_ENV === "development"
               ? "localhost"
-              : "api.linkerapp.store"
+              : "herokuapp.com"
 
         });
         return supplier;
@@ -209,7 +209,7 @@ export const signIn = schemaComposer.createResolver<
       domain:
         process.env.NODE_ENV === "development"
           ? "localhost"
-          : "api.linkerapp.store",
+          : "herokuapp.com",
     });
   
     return user;
@@ -238,7 +238,7 @@ export const signOut = schemaComposer.createResolver({
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 yr in ms
       domain:
-        process.env.NODE_ENV === "development" ? "localhost" : "api.linkerapp.store" //! FIXME:
+        process.env.NODE_ENV === "development" ? "localhost" : "herokuapp.com" //! FIXME:
     });
     return { success: true };
   },
