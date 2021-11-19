@@ -18,7 +18,7 @@ export const createBill = schemaComposer.createResolver<
     // SECURITY
 
     // ARGS
-    const { client, totalPrice, enterprise } = args.data.createBillInfoInput;
+    const { client, totalPrice, enterprise, enterpriseOwner } = args.data.createBillInfoInput;
     const products = args.data.addingProducts;
     const taxCharge = 0.16 // 16% TAX FOR EACH PURCHASE
     const clientIn = await User.findById(client).exec();
@@ -36,6 +36,7 @@ export const createBill = schemaComposer.createResolver<
       // GENERATING THE BILL
       const bill = await Bill.create({
         enterprise,
+        enterpriseOwner,
         tax,
         products,
         totalPrice,
