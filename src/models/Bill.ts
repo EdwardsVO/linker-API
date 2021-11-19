@@ -10,6 +10,7 @@ export interface BillDocument extends Document {
   status?: number;
   createdAt?: Date;
   review?: Types.ObjectId; // Falta
+  enterpriseOwner: UserDocument | Types.ObjectId;
 }
 
 const billSchema = new Schema<BillDocument>({
@@ -37,6 +38,10 @@ const billSchema = new Schema<BillDocument>({
     type: Date,
     default: new Date(),
   },
+  enterpriseOwner: {
+    type: Schema.Types.ObjectId,
+    ref: 'enterpriseOwner'
+  }
   // review
 });
 

@@ -36,13 +36,14 @@ export const createBill = schemaComposer.createResolver<
       // GENERATING THE BILL
       const bill = await Bill.create({
         enterprise,
-        enterpriseOwner,
         tax,
         products,
         totalPrice,
         client,
         status: 1,
       });
+      bill.enterpriseOwner = enterprise.owner;
+      await bill.save();
 
       currentClientBalance -= totalPrice; //REDUCING THE BALANCE AFTER THE PURCHASE
       clientIn.balance = currentClientBalance;
@@ -57,7 +58,7 @@ export const createBill = schemaComposer.createResolver<
       currentEnterpriseBalance += totalPrice;
       enterpriseIn.balance = currentEnterpriseBalance; //ADDING THE NEW BALANCE OF THE ENTERPRISE AFTER THE SALE
       await enterpriseIn.save();
-
+      
       return bill;
     }
 
