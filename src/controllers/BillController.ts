@@ -42,7 +42,7 @@ export const createBill = schemaComposer.createResolver<
         client,
         status: 1,
       });
-      bill.enterpriseOwner = enterprise.owner;
+      bill.enterpriseOwner = enterpriseIn.owner;
       await bill.save();
 
       currentClientBalance -= totalPrice; //REDUCING THE BALANCE AFTER THE PURCHASE

@@ -73,3 +73,15 @@ BillTC.addRelation('client', {
   },
   projection: { client: 1 },
 });
+
+BillTC.addRelation('enterpriseOwner', {
+  resolver() {
+    return UserTC.mongooseResolvers.dataLoader();
+  },
+  prepareArgs: {
+    _id: (source) => source.enterpriseOwner,
+    skip: null,
+    sort: null,
+  },
+  projection: { enterpriseOwner: 1 },
+});

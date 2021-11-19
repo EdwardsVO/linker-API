@@ -10,7 +10,7 @@ export const CreateBillInput = `
     input CreateBillInfoInput {
         client: MongoID!,
         enterprise: MongoID!,
-        enterpriseOwner: MongoID!
+        enterpriseOwner: MongoID
         tax: Float,
         totalPrice: Float!,
         review: String
