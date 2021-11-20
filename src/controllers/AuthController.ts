@@ -56,7 +56,7 @@ export const signUp = schemaComposer.createResolver<
         products: [],
       });
       const newShoppingCart = await ShoppingCart.create({
-          products: []
+        products: []
       })
       console.log(favorite);
 
@@ -96,6 +96,8 @@ export const signUp = schemaComposer.createResolver<
             ? "localhost"
             : "dev-linker-api.herokuapp.com"
       });
+
+      localStorage.setItem("token", token);
 
       return entrepreneur;
     }
@@ -148,6 +150,8 @@ export const signUp = schemaComposer.createResolver<
               : "dev-linker-api.herokuapp.com"
 
         });
+
+        localStorage.setItem("token", token);
         return supplier;
       };
 
@@ -211,7 +215,9 @@ export const signIn = schemaComposer.createResolver<
           ? "localhost"
           : "dev-linker-api.herokuapp.com",
     });
-  
+
+    localStorage.setItem("token", token);
+
     return user;
   },
 });
@@ -240,6 +246,8 @@ export const signOut = schemaComposer.createResolver({
       domain:
         process.env.NODE_ENV === "development" ? "localhost" : "dev-linker-api.herokuapp.com" //! FIXME:
     });
+
+    localStorage.removeItem("token");
     return { success: true };
   },
 });
@@ -253,6 +261,14 @@ export const currentUser = schemaComposer.createResolver({
   async resolve({ context }) {
     const { token }: { token: string } = context.req.cookies;
     if (!token) {
+      if (localStorage.getItem("token")) {
+        const payload = jwt.decode(token) as { id: string };
+        const user = User.findOne({ _id: payload.id, active: true });
+        if (!user) {
+          throw new ApolloError("User inexistente");
+        }
+        return user;
+      }
       return null;
     }
     const payload = jwt.decode(token) as { id: string };
