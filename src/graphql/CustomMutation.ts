@@ -4,6 +4,7 @@ import {
   createBill,
   changePassword,
   resetPassword,
+  setReview,
   signIn,
   signOut,
   signUp
@@ -15,6 +16,7 @@ export default {
   createBill,
   changePassword,
   resetPassword,
+  setReview,
   signIn,
   signOut,
   signUp

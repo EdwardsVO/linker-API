@@ -1,7 +1,7 @@
 import { Schema, Document, Types, model } from "mongoose";
 import { composeMongoose } from "graphql-compose-mongoose";
 import { ProductDocument, ProductTC } from "./Product";
-import { UserDocument, UserTC } from "./User";
+import { UserDocument, UserTC, ReviewDocument, ReviewTC } from "./";
 
 export interface EnterpriseDocument extends Document {
   name?: string;
@@ -15,7 +15,7 @@ export interface EnterpriseDocument extends Document {
   category?: number;
   products?: Array<ProductDocument> | Types.ObjectId;
   salesSummary?: Types.ObjectId; // BillDocument[]
-  commentsMadeIt?: Types.ObjectId; // SellerComment[]
+  commentsMadeIt?: ReviewDocument | Types.ObjectId; // SellerComment[]
 }
 
 const enterpriseSchema = new Schema<EnterpriseDocument>({
@@ -106,4 +106,17 @@ EnterpriseTC.addRelation("owner", {
     sort: null,
   },
   projection: { owner: 1 },
+});
+
+//REVIEW RELATION
+EnterpriseTC.addRelation("commentsMadeIt", {
+  resolver() {
+    return ReviewTC.mongooseResolvers.dataLoaderMany();
+  },
+  prepareArgs: {
+    _ids: (source) => source.commentsMadeIt,
+    skip: null,
+    sort: null,
+  },
+  projection: { commentsMadeIt: 1 },
 });

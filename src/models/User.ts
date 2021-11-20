@@ -5,6 +5,7 @@ import { EnterpriseDocument, EnterpriseTC } from './Enterprise';
 import { FavoritesDocument, FavoritesTC } from './Favorites';
 import {ShoppingCartDocument, ShoppingCartTC } from './ShoppingCart';
 import { BillDocument, BillTC } from './Bill';
+import { ReviewDocument, ReviewTC } from './Review';
 import bcrypt from 'bcryptjs';
 
 export interface UserDocument extends Document {
@@ -26,7 +27,7 @@ export interface UserDocument extends Document {
   summaryShop?: BillDocument | Types.ObjectId;
   shoppingCart?: ShoppingCartDocument | Types.ObjectId;   
   enterprise?: EnterpriseDocument | Types.ObjectId; //
-  reviewsMade?: Types.ObjectId; // || BuyerReviewDocument[]
+  reviewsMade?: ReviewDocument | Types.ObjectId; // || []
   questionsMade?: Types.ObjectId; // ||QuestionsMadeDocument[]
   createdAt?: Date;
   updatedAt?: Date;
@@ -185,5 +186,18 @@ UserTC.addRelation('favorites', {
     sort: null,
   },
   projection: { favorites: 1 },
+});
+
+//REVIEW RELATION
+UserTC.addRelation("reviewsMade", {
+  resolver() {
+    return ReviewTC.mongooseResolvers.dataLoaderMany();
+  },
+  prepareArgs: {
+    _ids: (source) => source.reviewsMade,
+    skip: null,
+    sort: null,
+  },
+  projection: { reviewsMade: 1 },
 });
 

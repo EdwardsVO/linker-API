@@ -9,3 +9,4 @@ export {
   signUp,
   signOut,
 } from "./AuthController";
+export { setReview } from "./ReviewController";
