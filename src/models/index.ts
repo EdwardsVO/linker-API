@@ -5,3 +5,4 @@ export * from './Bill';
 export * from './ShoppingCart';
 export * from './Favorites';
 export * from './Transaction';
+export * from './Review'

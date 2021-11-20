@@ -1,6 +1,6 @@
 import { Schema, Document, Types, model } from 'mongoose';
 import { composeMongoose } from 'graphql-compose-mongoose';
-import { EnterpriseDocument, EnterpriseTC } from './Enterprise';
+import { EnterpriseDocument, EnterpriseTC, ReviewDocument, ReviewTC } from './';
 
 export interface ProductDocument extends Document {
   name?: string;
@@ -13,7 +13,7 @@ export interface ProductDocument extends Document {
   rating?: number;
   quantity?: number;
   units?: number;
-  review?: Types.ObjectId; // BuyerReviewDocument []
+  review?: ReviewDocument | Types.ObjectId;
   enterprise?: EnterpriseDocument | Types.ObjectId;
   uploadedDate?: Date;
   visibility?: number;
@@ -104,4 +104,17 @@ ProductTC.addRelation('enterprise', {
     sort: null,
   },
   projection: { enterprise: 1 },
+});
+
+//REVIEW RELATION
+ProductTC.addRelation("review", {
+  resolver() {
+    return ReviewTC.mongooseResolvers.dataLoaderMany();
+  },
+  prepareArgs: {
+    _ids: (source) => source.review,
+    skip: null,
+    sort: null,
+  },
+  projection: { review: 1 },
 });
