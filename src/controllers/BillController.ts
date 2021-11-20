@@ -18,7 +18,7 @@ export const createBill = schemaComposer.createResolver<
     // SECURITY
 
     // ARGS
-    const { client, totalPrice, enterprise } = args.data.createBillInfoInput;
+    const { client, totalPrice, enterprise, enterpriseOwner } = args.data.createBillInfoInput;
     const products = args.data.addingProducts;
     const taxCharge = 0.16 // 16% TAX FOR EACH PURCHASE
     const clientIn = await User.findById(client).exec();
@@ -42,6 +42,8 @@ export const createBill = schemaComposer.createResolver<
         client,
         status: 1,
       });
+      bill.enterpriseOwner = enterpriseIn.owner;
+      await bill.save();
 
       currentClientBalance -= totalPrice; //REDUCING THE BALANCE AFTER THE PURCHASE
       clientIn.balance = currentClientBalance;
@@ -56,7 +58,7 @@ export const createBill = schemaComposer.createResolver<
       currentEnterpriseBalance += totalPrice;
       enterpriseIn.balance = currentEnterpriseBalance; //ADDING THE NEW BALANCE OF THE ENTERPRISE AFTER THE SALE
       await enterpriseIn.save();
-
+      
       return bill;
     }
 

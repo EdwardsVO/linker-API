@@ -10,6 +10,7 @@ export interface BillDocument extends Document {
   status?: number;
   createdAt?: Date;
   review?: Types.ObjectId; // Falta
+  enterpriseOwner: UserDocument | Types.ObjectId;
 }
 
 const billSchema = new Schema<BillDocument>({
@@ -37,6 +38,10 @@ const billSchema = new Schema<BillDocument>({
     type: Date,
     default: new Date(),
   },
+  enterpriseOwner: {
+    type: Schema.Types.ObjectId,
+    ref: 'enterpriseOwner'
+  }
   // review
 });
 
@@ -67,4 +72,16 @@ BillTC.addRelation('client', {
     sort: null,
   },
   projection: { client: 1 },
+});
+
+BillTC.addRelation('enterpriseOwner', {
+  resolver() {
+    return UserTC.mongooseResolvers.dataLoader();
+  },
+  prepareArgs: {
+    _id: (source) => source.enterpriseOwner,
+    skip: null,
+    sort: null,
+  },
+  projection: { enterpriseOwner: 1 },
 });
