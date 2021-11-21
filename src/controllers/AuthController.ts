@@ -29,6 +29,7 @@ const SignInInput = `
   }
 `;
 
+
 //SIGN UP RESOLVER
 export const signUp = schemaComposer.createResolver<
   any,
@@ -214,7 +215,7 @@ export const signIn = schemaComposer.createResolver<
     });
 
 
-    return user;
+    return {user, token};
   },
 });
 
@@ -263,7 +264,7 @@ export const currentUser = schemaComposer.createResolver({
     if (!user) {
       throw new ApolloError("User inexistente");
     }
-    return user;
+    return {user, token};
   },
 });
 
