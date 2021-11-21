@@ -1,5 +1,9 @@
-import { currentUser } from "../controllers";
+import { 
+  currentUser,
+  currentUserMobile
+} from "../controllers";
 
 export default {
   currentUser,
+  currentUserMobile
 };

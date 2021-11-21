@@ -6,6 +6,8 @@ import {
   resetPassword,
   setReview,
   signIn,
+  signInMobile,
+  signUpMobile,
   signOut,
   signUp
 } from '../controllers';
@@ -18,6 +20,8 @@ export default {
   resetPassword,
   setReview,
   signIn,
+  signUp,
+  signInMobile,
+  signUpMobile,
   signOut,
-  signUp
 };
