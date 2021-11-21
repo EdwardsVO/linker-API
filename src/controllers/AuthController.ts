@@ -28,6 +28,81 @@ const SignInInput = `
     password: String!
   }
 `;
+//REVIEW MOBILE FUNCTIONS
+
+//SIGN IN MOBILE
+
+export const signInMobile = schemaComposer.createResolver<
+  any,
+  {
+    data: TSignInInput;
+  }
+>({
+  name: "signIn",
+  kind: "mutation",
+  description: "Sign In an user to the app",
+  type: `type SignUpMobile { user: User!, token: String! }`,
+  args: {
+    data: SignInInput,
+  },
+  async resolve({ args, context }) {
+    const user = await User.findOne({ email: args?.data?.email, active: true });
+    if (!user) {
+      throw new ApolloError(
+        `No se ha encontrado a un usuario con correo ${args?.data?.email}`
+      );
+    }
+    const compare = await bcrypt.compare(args?.data?.password, user.password);
+    if (!compare) {
+      throw new ApolloError(`La contraseña es incorrecta ${args?.data?.email}`);
+    }
+    const token = jwt.sign(
+      {
+        id: user._id,
+        role: user.role,
+        emission: new Date().toISOString()
+      },
+      process.env.SECRET
+    );
+    context.res.cookie("token", token, {
+      secure: true,
+      sameSite: "None",
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 yr in ms
+      domain:
+        process.env.NODE_ENV === "development"
+          ? "localhost"
+          : "dev-linker-api.herokuapp.com",
+    });
+
+
+    return {user, token};
+  },
+});
+
+//SIGN UP MOBILE
+
+
+//CURRENT USER MOBILE
+export const currentUserMobile = schemaComposer.createResolver({
+  name: "currentUserMobile",
+  kind: "query",
+  description: "returns the user cookie",
+  type: `type CurrentUserMobile { token: String! }`,
+  async resolve({ args }) {
+    
+    const { token } = args.data.token;
+    if (!token) {
+      return null;
+    }
+    const payload = jwt.decode(token as string);
+    const user = await User.findById((payload as { id: string }).id);
+    if (!user) {
+      throw new ApolloError(`User doesn't exists`);
+    }
+    return user;
+  }
+})
 
 
 //SIGN UP RESOLVER
@@ -215,7 +290,7 @@ export const signIn = schemaComposer.createResolver<
     });
 
 
-    return {user, token};
+    return user;
   },
 });
 
@@ -264,7 +339,7 @@ export const currentUser = schemaComposer.createResolver({
     if (!user) {
       throw new ApolloError("User inexistente");
     }
-    return {user, token};
+    return user;
   },
 });
 
