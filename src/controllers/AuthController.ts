@@ -228,9 +228,9 @@ export const currentUserMobile = schemaComposer.createResolver({
   kind: "query",
   description: "returns the user cookie",
   type: `type CurrentUserMobile { user: User!, token: String! }`,
-  async resolve({ args }) {
+  async resolve({ args, context }) {
     
-    const { token } = args.data.token;
+    const { token } = context.req.cookie;
     if (!token) {
       return null;
     }
