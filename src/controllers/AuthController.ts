@@ -81,6 +81,145 @@ export const signInMobile = schemaComposer.createResolver<
 });
 
 //SIGN UP MOBILE
+//SIGN UP RESOLVER
+export const signUpMobile = schemaComposer.createResolver<
+  any,
+  {
+    data: TCreateUserInput;
+  }
+>({
+  name: "signUp",
+  type: `type SignUpMobile { user: User!, token: String! }`,
+  description: "Sign Up for a new user in the db",
+  kind: "mutation",
+  args: { data: CreateUserInput },
+  async resolve({ args, context }) {
+    const { username, firstName, lastName, dni, email, image, password, role } =
+      args.data.createUserInfo;
+
+    const userFromDB = await User.findOne({ email });
+
+    if (userFromDB) {
+      throw new ApolloError("Este email ya existe");
+    }
+
+    if (role === 1) {
+      const favorite = await Favorites.create({
+        products: [],
+      });
+      const newShoppingCart = await ShoppingCart.create({
+        products: []
+      })
+      console.log(favorite);
+
+      // CREATING NEW ENTREPRENEUR
+      const entrepreneur = await User.create({
+        username,
+        firstName,
+        lastName,
+        dni,
+        email,
+        image,
+        password,
+        role,
+        balance: 0,
+        status: 1,
+      });
+      entrepreneur.favorites = favorite;
+      entrepreneur.shoppingCart = newShoppingCart;
+      entrepreneur.save();
+      console.log(entrepreneur);
+      const token = jwt.sign(
+        {
+          id: entrepreneur._id,
+          role: role,
+          emission: new Date().toISOString(),
+        },
+        process.env.SECRET
+      );
+
+      context.res.cookie("token", token, {
+        secure: true,
+        sameSite: "None",
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24, // 24 hrs in ms
+        domain:
+          process.env.NODE_ENV === "development"
+            ? "localhost"
+            : "dev-linker-api.herokuapp.com"
+      });
+
+      return { entrepreneur, token };
+    }
+
+    if (role === 2) {
+      const { name, rif, category } = args.data.createEnterprise;
+
+      // VALIDATORS
+      if (await Enterprise.findOne({ rif }).exec()) {
+        throw new ApolloError("Error: Empresa existente");
+      }
+
+      // CREATING NEW SUPPLIER
+
+      const newSupplier = async (enterprise: EnterpriseDocument) => {
+        const supplier = await User.create({
+          username,
+          firstName,
+          lastName,
+          dni,
+          email,
+          image,
+          password,
+          role,
+          status: 1,
+          balance: 0,
+          enterprise: enterprise._id,
+        });
+        enterprise.owner = supplier._id;
+        console.log(supplier);
+        await enterprise.save();
+
+        const token = jwt.sign(
+          {
+            id: supplier._id,
+            role: supplier.role,
+            emission: new Date().toISOString(),
+          },
+          process.env.SECRET
+        );
+
+        context.res.cookie("token", token, {
+          secure: true,
+          sameSite: "None",
+          httpOnly: true,
+          maxAge: 1000 * 60 * 60 * 24, // 24 hrs in ms
+          domain:
+            process.env.NODE_ENV === "development"
+              ? "localhost"
+              : "dev-linker-api.herokuapp.com"
+
+        });
+
+        return { supplier, token };
+      };
+
+      // CREATING ENTERPRISE
+      const newEnterprise = async () => {
+        const enterprise = await Enterprise.create({
+          name,
+          rif,
+          status: 1,
+          category,
+          banner: "https://linker-files.sfo3.digitaloceanspaces.com/ent.jpg",
+        });
+        return newSupplier(enterprise);
+      };
+
+      return newEnterprise();
+    }
+  },
+});
 
 
 //CURRENT USER MOBILE
