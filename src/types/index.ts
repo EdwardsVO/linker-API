@@ -6,3 +6,5 @@ export { CreateUserInput } from '././UserController';
 export type { TCreateUserInput } from '././UserController';
 export { CreateReviewInput } from './ReviewController';
 export type { TCreateReviewInput } from './ReviewController';
+export { GetCurrentUserMobile } from './CurrentMobileUserInput';
+export type { TGetCurrentUserMobile } from './CurrentMobileUserInput';
