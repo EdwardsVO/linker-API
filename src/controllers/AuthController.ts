@@ -7,7 +7,7 @@ import { schemaComposer } from "graphql-compose";
 import { v4 as uuid } from "uuid";
 import { ApolloError } from "apollo-server";
 import { sendResetPasswordEmail } from "../utils/email";
-import { CreateUserInput, TCreateUserInput } from "../types";
+import { CreateUserInput, TCreateUserInput, GetCurrentUserMobile, TGetCurrentUserMobile } from "../types";
 import {
   UserTC,
   User,
@@ -223,14 +223,19 @@ export const signUpMobile = schemaComposer.createResolver<
 
 
 //CURRENT USER MOBILE
-export const currentUserMobile = schemaComposer.createResolver({
+export const currentUserMobile = schemaComposer.createResolver<
+any,
+{
+  data: TGetCurrentUserMobile;
+}
+>({
   name: "currentUserMobile",
-  kind: "query",
+  kind: "mutation",
   description: "returns the user cookie",
-  type: `type CurrentUserMobile { user: User!, token: String! }`,
+  type: UserTC.getType(),
+  args: { data: GetCurrentUserMobile},
   async resolve({ args, context }) {
-    
-    const { token } = context.req.cookie;
+    const { token } = args.data.getCurrentUserInfo;
     if (!token) {
       return null;
     }

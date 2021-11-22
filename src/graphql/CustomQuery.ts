@@ -1,9 +1,7 @@
 import { 
-  currentUser,
-  currentUserMobile
+  currentUser
 } from "../controllers";
 
 export default {
-  currentUser,
-  currentUserMobile
+  currentUser
 };
