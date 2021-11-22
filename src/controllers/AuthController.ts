@@ -7,14 +7,15 @@ import { schemaComposer } from "graphql-compose";
 import { v4 as uuid } from "uuid";
 import { ApolloError } from "apollo-server";
 import { sendResetPasswordEmail } from "../utils/email";
-import { CreateUserInput, TCreateUserInput } from "../types";
+import { CreateUserInput, TCreateUserInput, GetCurrentUserMobile, TGetCurrentUserMobile } from "../types";
 import {
   UserTC,
   User,
   Favorites,
   Enterprise,
   EnterpriseDocument,
-  ShoppingCart
+  ShoppingCart,
+
 } from "../models";
 
 type TSignInInput = {
@@ -223,14 +224,20 @@ export const signUpMobile = schemaComposer.createResolver<
 
 
 //CURRENT USER MOBILE
-export const currentUserMobile = schemaComposer.createResolver({
+export const currentUserMobile = schemaComposer.createResolver<
+any,
+{
+   data: TGetCurrentUserMobile
+}
+>({
   name: "currentUserMobile",
-  kind: "query",
+  kind: "mutation",
   description: "returns the user cookie",
-  type: `type CurrentUserMobile { token: String! }`,
-  async resolve({ args }) {
+  type: UserTC.getType(),
+  args: {data: GetCurrentUserMobile},
+  async resolve({ args, context }) {
     
-    const { token } = args.data.token;
+    const { token } = args.data.getCurrentUserInfo;
     if (!token) {
       return null;
     }
