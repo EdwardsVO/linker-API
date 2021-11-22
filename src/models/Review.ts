@@ -7,9 +7,7 @@ export interface ReviewDocument extends Document {
     product: ProductDocument | Types.ObjectId,
     enterprise: EnterpriseDocument | Types.ObjectId,
     productComment: string,
-    productRating: number,
-    enterpriseComment: string,
-    enterpriseRating: number
+    productRating: number
 }
 
 const reviewSchema = new Schema<ReviewDocument>({
@@ -32,14 +30,6 @@ const reviewSchema = new Schema<ReviewDocument>({
     productRating: {
         type: Number,
         default: 0
-    },
-    enterpriseComment: {
-        type: String,
-        default: ""
-    },
-    enterpriseRating: {
-        type: Number,
-        default: 0
     }
 })
 
@@ -48,21 +38,6 @@ export const Review = model<ReviewDocument>('Review', reviewSchema);
 export const ReviewTC = composeMongoose<ReviewDocument, any>(Review);
 
 //RELATIONS
-
-ReviewTC.addRelation('enterprise', {
-    resolver() {
-      return EnterpriseTC.mongooseResolvers.dataLoader();
-    },
-    prepareArgs: {
-      _id: (source) => source.enterprise,
-      skip: null,
-      sort: null,
-    },
-    projection: { enterprise: 1 },
-  });
-
-
-
 ReviewTC.addRelation('client', {
     resolver() {
       return UserTC.mongooseResolvers.dataLoader();
