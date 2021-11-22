@@ -7,7 +7,7 @@ import { schemaComposer } from "graphql-compose";
 import { v4 as uuid } from "uuid";
 import { ApolloError } from "apollo-server";
 import { sendResetPasswordEmail } from "../utils/email";
-import { CreateUserInput, TCreateUserInput, GetCurrentUserMobile, TGetCurrentUserMobile } from "../types";
+import { CreateUserInput, TCreateUserInput } from "../types";
 import {
   UserTC,
   User,
@@ -113,7 +113,7 @@ export const signUpMobile = schemaComposer.createResolver<
       console.log(favorite);
 
       // CREATING NEW ENTREPRENEUR
-      const entrepreneur = await User.create({
+      const user = await User.create({
         username,
         firstName,
         lastName,
@@ -125,13 +125,13 @@ export const signUpMobile = schemaComposer.createResolver<
         balance: 0,
         status: 1,
       });
-      entrepreneur.favorites = favorite;
-      entrepreneur.shoppingCart = newShoppingCart;
-      entrepreneur.save();
-      console.log(entrepreneur);
+      user.favorites = favorite;
+      user.shoppingCart = newShoppingCart;
+      user.save();
+      console.log(user);
       const token = jwt.sign(
         {
-          id: entrepreneur._id,
+          id: user._id,
           role: role,
           emission: new Date().toISOString(),
         },
@@ -149,7 +149,7 @@ export const signUpMobile = schemaComposer.createResolver<
             : "dev-linker-api.herokuapp.com"
       });
 
-      return { entrepreneur, token };
+      return { user, token };
     }
 
     if (role === 2) {
@@ -163,7 +163,7 @@ export const signUpMobile = schemaComposer.createResolver<
       // CREATING NEW SUPPLIER
 
       const newSupplier = async (enterprise: EnterpriseDocument) => {
-        const supplier = await User.create({
+        const user = await User.create({
           username,
           firstName,
           lastName,
@@ -176,14 +176,14 @@ export const signUpMobile = schemaComposer.createResolver<
           balance: 0,
           enterprise: enterprise._id,
         });
-        enterprise.owner = supplier._id;
-        console.log(supplier);
+        enterprise.owner = user._id;
+        console.log(user);
         await enterprise.save();
 
         const token = jwt.sign(
           {
-            id: supplier._id,
-            role: supplier.role,
+            id: user._id,
+            role: user.role,
             emission: new Date().toISOString(),
           },
           process.env.SECRET
@@ -201,7 +201,7 @@ export const signUpMobile = schemaComposer.createResolver<
 
         });
 
-        return { supplier, token };
+        return { user, token };
       };
 
       // CREATING ENTERPRISE
@@ -223,19 +223,14 @@ export const signUpMobile = schemaComposer.createResolver<
 
 
 //CURRENT USER MOBILE
-export const currentUserMobile = schemaComposer.createResolver<
-any,
-{
-  data: TGetCurrentUserMobile;
-}
->({
+export const currentUserMobile = schemaComposer.createResolver({
   name: "currentUserMobile",
-  kind: "mutation",
+  kind: "query",
   description: "returns the user cookie",
-  type: UserTC.getType(),
-  args: { data: GetCurrentUserMobile},
-  async resolve({ args, context }) {
-    const { token } = args.data.getCurrentUserInfo;
+  type: `type CurrentUserMobile { token: String! }`,
+  async resolve({ args }) {
+    
+    const { token } = args.data.token;
     if (!token) {
       return null;
     }
