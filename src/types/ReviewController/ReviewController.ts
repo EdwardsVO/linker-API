@@ -7,13 +7,13 @@ export const CreateReviewInput =`
     }
 
     input CreateReviewInfoInput {
-        client: MongoID!,
-        product: MongoID!,
-        enterprise: MongoID!,
-        productComment: String!,
-        productRating: Float!,
-        enterpriseComment: String!,
-        enterpriseRating: Float!
+        client: MongoID,
+        product: MongoID,
+        enterprise: MongoID,
+        productComment: String,
+        productRating: Float,
+        enterpriseComment: String,
+        enterpriseRating: Float
     }
 `;
 

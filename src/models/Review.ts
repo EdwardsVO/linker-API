@@ -27,19 +27,19 @@ const reviewSchema = new Schema<ReviewDocument>({
     },
     productComment: {
         type: String,
-        required: [ true, 'Ingrese comentario para el review' ]
+        default: ""
     },
     productRating: {
         type: Number,
-        required: [ true, 'Ingrese rating para el producto' ]
+        default: 0
     },
     enterpriseComment: {
         type: String,
-        required: [ true, 'Ingrese comentario para el servicio de la empresa' ]
+        default: ""
     },
     enterpriseRating: {
         type: Number,
-        required: [ true, 'Ingrese rating para el servicio de la empresa' ]
+        default: 0
     }
 })
 
