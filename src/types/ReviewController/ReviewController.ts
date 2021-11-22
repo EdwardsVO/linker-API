@@ -11,9 +11,7 @@ export const CreateReviewInput =`
         product: MongoID,
         enterprise: MongoID,
         productComment: String,
-        productRating: Float,
-        enterpriseComment: String,
-        enterpriseRating: Float
+        productRating: Float
     }
 `;
 
@@ -24,7 +22,5 @@ export type TCreateReviewInput = {
         product: ProductDocument;
         productComment: string;
         productRating: number;
-        enterpriseComment: string;
-        enterpriseRating: number;
     }
 }
