@@ -5,7 +5,8 @@ import {
   BillTC,
   FavoritesTC,
   TransactionTC,
-} from '../models/index.js';
+  ReviewTC,
+} from "../models/index.js";
 
 // USER
 
@@ -31,6 +32,9 @@ const Query = {
   //TRANSACTIONS
   transaction: TransactionTC.mongooseResolvers.findOne(),
   transactions: TransactionTC.mongooseResolvers.findMany(),
+  // REVIEWS
+  review: ReviewTC.mongooseResolvers.findOne(),
+  reviews: ReviewTC.mongooseResolvers.findMany(),
 };
 
 export default Query;
